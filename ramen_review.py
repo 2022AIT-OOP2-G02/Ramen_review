@@ -1,11 +1,14 @@
 from flask import Flask, request, render_template, redirect
-import requests
+from dotenv import load_dotenv
+load_dotenv()
+import requests, os
+
+PORT = os.getenv("PORT")
+API_KEY = os.getenv("API_KEY")
 
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
-
-PORT = 8080
-API_KEY = "xxx"
+app.config["DEBUG"] = True
 
 @app.route('/ramen-map', methods=["GET"])
 def ramen_map():
@@ -23,4 +26,4 @@ def index():
     return redirect('/ramen-map')
 
 if __name__ == "__main__":
-    app.run(port=PORT, debug=True)
+    app.run(port=PORT)
