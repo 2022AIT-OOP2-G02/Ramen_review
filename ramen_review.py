@@ -76,6 +76,7 @@ def review_post():
         return jsonify({
             "error": f"レビュー処理に失敗しました。<pre>{ e.args }</pre>"
         })
+        
     #更新
     with open('ramen_review.json') as h:
         json_data = json.load(h)

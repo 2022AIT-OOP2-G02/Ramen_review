@@ -3,11 +3,70 @@
 <head>
     <meta charset="utf-8">
     <title>レビュー追加</title>
-    <link rel="stylesheet" href="review_add.css" type="text/css">
+    
+    <!-- <link rel="stylesheet" href="review_add.css" type="text/css"> -->
+
+    <!-- new.css -->
+    <link rel="stylesheet" href="https://fonts.xz.style/serve/inter.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css">
+
+    <!-- メッセージ表示用のCSSを定義 -->
+    <style>
+        #message-container,
+        #error-container {
+            padding: 1rem;
+            border: 1px solid #e9ecef;
+            border-left-width: 0.25rem;
+            border-left-color: #5bc0de;
+            border-radius: 0.25rem;
+        }
+        #error-container {
+            color: #dc3545;
+        }
+    </style>
+    
+<script defer src="{{ url_for('static', filename='ramen_review_add.js') }}"></script>
 </head>
 <body>
-    <header></header>
-    <main></main>
+    <header>
+        <h1>ラーメン屋レビュー評価</h1>
+    </header>
+    <main>
+        <section>
+            <form action="search">
+                <div>
+                    <input type="text" id="search-write_name" placeholder="write_name" name="rn">
+                    <input type="text" id="search-review_points" placeholder="review_points" name="rp">
+                    <input type="text" id="search-review" placeholder="review" name="re">
+                    <button id="search-submit">Search</button>
+                </div>
+            </form>
+        </section>
+        <table id="review-list">
+            <thead>
+                <tr>
+                    <th scope="col">名前</th>
+                    <th scope="col">評価点</th>
+                    <th scope="col">レビュー内容</th>
+                </tr>
+            </thead>
+        </table>
+
+        <section>
+            <h3>評価の追加</h3>
+            <form id="add">
+                <div>
+                    <input required type="text" id="add-write_name" placeholder="write_name" name="rn">
+                    <input required type="text" id="add-review_points" placeholder="review_points" name="rp">
+                    <input required type="text" id="add-review" placeholder="review" name="re">
+                    <button id="add-submit">Add</button>
+                </div>
+            </form>
+            <!-- メッセージの表示領域  -->
+            <div id="message-container" role="alert" style="display: none;"></div>
+            <div id="error-container" role="alert" style="display: none;"></div>
+        </section>
+    </main>
     <footer></footer>
 </body>
 </html>
