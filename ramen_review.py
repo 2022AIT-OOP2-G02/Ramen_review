@@ -30,16 +30,16 @@ def review_get():
 @app.route('/review', methods=["POST"])
 def review_post():
     # 検索パラメータの取得
-    p_write_name = request.args.get('rn',None)
-    p_review_points = request.args.get('rp',None)
-    p_review = request.args.get('re',None)
+    p_write_name = request.form.get('rn',None)
+    p_review_points = request.form.get('rp',None)
+    p_review = request.form.get('re',None)
 
     #Addボタン押下時、未入力項目があればフォーム内のどこかに未入力項目があるメッセージを表示する
     error_message = ""
     if p_write_name is None:
         error_message += "名前が未入力です。<br>"
     if p_review_points is None:
-        error_message += "点数が未入力です。<br>"
+        error_message += "評価点が未入力です。<br>"
     if p_review is None:
         error_message += "レビュー内容が未入力です。<br>"
 
