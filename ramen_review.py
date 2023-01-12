@@ -3,6 +3,8 @@ from dotenv import load_dotenv
 load_dotenv()
 import json
 import requests, os
+from pymongo import MongoClient
+from datetime import datetime
 
 PORT = os.getenv("PORT")
 API_KEY = os.getenv("API_KEY")
@@ -10,6 +12,26 @@ API_KEY = os.getenv("API_KEY")
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
 app.config["DEBUG"] = True
+
+class Mongo(object):
+
+     def __init__(self):
+         self.clint = MongoClient()
+         self.db = self.clint['test']
+
+     def add_one(self,rn,rp,rv):
+        """データ挿入"""
+        post = {
+            #'shop_name': p_write_name,
+            'write_name': rn,
+            'review_points': rp,
+            'review':rv,
+            'created_at': datetime.now()
+        }
+        return self.db.test.insert_one(post)
+
+obj = Mongo()
+
 
 @app.route('/ramen-map', methods=["GET"])
 def ramen_map():
@@ -69,41 +91,10 @@ def review_post():
             "error": error_message
         })
 
-    #受け取ったパラメータを「ramen_review.json」のファイルに追記する
-    try:
-        with open('ramen_review.json') as h:
-            json_data = json.load(h) #データ型に変換
-        #パラメータを設定
-        item = {
-            "write_name": p_write_name,
-            "review_points": p_review_points,
-            "review": p_review,
-        }
-        # JSONに追加
-        json_data.append(item)
+    rest = obj.add_one(p_write_name,p_review_points,p_review)
+    print(rest)  
 
-        with open('ramen_review.json', 'w') as h:
-            json.dump(json_data, h, 
-                    ensure_ascii = False,
-                    indent = 4,
-                    sort_keys = True,
-                    separators = (',', ': '))
 
-    #例外失敗
-    except IOError as e:
-        import traceback
-        traceback.print_exc()
-        return jsonify({
-            "error": f"レビュー処理に失敗しました。<pre>{ e.args }</pre>"
-        })
-        
-    #更新
-    with open('ramen_review.json') as h:
-        json_data = json.load(h)
-    return jsonify({
-        "result": "レビューの登録が完了しました。",
-        "json_data": json_data
-    })
 
 @app.route('/')
 def index():
