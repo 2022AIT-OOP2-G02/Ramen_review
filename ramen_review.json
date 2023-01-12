@@ -1,0 +1,17 @@
+[
+    {
+        "review": "美味しかった！",
+        "review_points": "50",
+        "write_name": "taro"
+    },
+    {
+        "review": "とても美味しかった！",
+        "review_points": "80",
+        "write_name": "taro2"
+    },
+    {
+        "review": "さいこう",
+        "review_points": "70",
+        "write_name": "taro3"
+    }
+]
