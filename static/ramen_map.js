@@ -12,8 +12,7 @@ const main = async () => {
 
 
     const markers = new Set();
-    let circle;
-    map.on('moveend', async (e) => {
+    map.on('moveend', async () => {
         const center = map.getCenter();
         const json = await fetchRamenShop({
             lat: center.lat,
@@ -26,17 +25,14 @@ const main = async () => {
             markers.delete(marker);
         }
 
-        if (circle) {
-            map.removeLayer(circle);
-            circle = undefined;
-        }
-
-        circle = L.circle(center, {
+        const circle = L.circle(center, {
             radius: RANGE_PATTERN[RANGE_VALUE],
             color: 'blue',
             fillColor: '#399ade',
             fillOpacity: 0.5
-        }).addTo(map);
+        });
+        circle.addTo(map);
+        markers.add(circle);
 
         for (const shop of json.shop) {
             const marker = L.marker([shop.lat, shop.lng]);
