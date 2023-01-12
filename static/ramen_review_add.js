@@ -92,7 +92,7 @@ sb.addEventListener("click", (ev) => {
     //データ検索のWeb APIは/addressをGETメソッドで呼び出す
 
     // データの初期表示
-    fetch("/address?" + param.toString()).then(response => {
+    fetch("/review?" + param.toString()).then(response => {
         console.log(response);
         response.json().then((data) => {
             console.log(data);  // 取得されたレスポンスデータをデバッグ表示
@@ -168,7 +168,7 @@ ab.addEventListener("click", (ev) => {
     data.append("re", re)
 
     //データ表示
-    fetch('/address', {
+    fetch('/review', {
         method: 'POST',
         body: data,
     }).then((response) => {
@@ -187,7 +187,7 @@ ab.addEventListener("click", (ev) => {
                 //メッセージ受信
                 document.getElementById('message-container').innerHTML = data.result
                 document.getElementById('message-container').style.display = "block"
-                //console.log("aaaaa")
+                console.log("aaaaa")
                 if (data.json_data) {
                     show_data(data.json_data) 
                 }
