@@ -17,6 +17,8 @@ def ramen_map():
 @app.route('/api/ramen-shop', methods=["GET"])
 def ramen_shop():
     args = request.args.copy()
+    if API_KEY == None:
+        raise Exception("APIキーが設定されていません")
     args.add("key", API_KEY)
     r = requests.get("http://webservice.recruit.co.jp/hotpepper/gourmet/v1/", args)
     return r.json()
