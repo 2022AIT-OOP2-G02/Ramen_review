@@ -1,5 +1,57 @@
-#map {
-    height: 90vh;
-    width: 90vw;
+header {
+    height: 5em;
+    border: 3px solid black;
+    margin-bottom: 1em;
+}
+
+#main-wrapper {
     margin: 5vh 5vw;
+    display: grid;
+    height: 90vh;
+    gap: 2em;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 5em 1fr;
+    grid-template-areas:
+        "search map"
+        "ranking map";
+}
+
+#search-wrapper {
+    grid-area: search;
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    border: 3px solid black;
+}
+
+#ranking {
+    display: none;
+    grid-area: ranking;
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    border: 3px solid black;
+}
+
+.show-ranking>#ranking {
+    display: block;
+}
+
+#shop-info {
+    display: none;
+    grid-area: ranking;
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    border: 3px solid black;
+}
+
+.show-shop-info>#shop-info {
+    display: block;
+}
+
+#map {
+    grid-area: map;
+    height: 100%;
+    width: 100%;
 }
