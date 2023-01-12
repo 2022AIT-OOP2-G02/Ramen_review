@@ -38,6 +38,7 @@ const displayRamenShop = async (map, markers) => {
         const marker = L.marker([shop.lat, shop.lng]);
         marker.bindPopup(shop.name);
         marker.addTo(map);
+        marker.on('click', displayRamenShopDetail.bind(null, shop));
         markers.add(marker);
     }
 };
@@ -48,6 +49,11 @@ const getProperRange = (zoom) => {
     if (zoom >= 16) return { level: 3, meter: 1000 };
     if (zoom >= 15) return { level: 4, meter: 2000 };
     return { level: 5, meter: 3000 };
+};
+
+const displayRamenShopDetail = (shopData, e) => {
+    console.log(shopData);
+    console.log(e);
 };
 
 const fetchRamenShop = async (serchParam) => {
