@@ -136,13 +136,13 @@ ab.addEventListener("click", (ev) => {
     ev.preventDefault() //HTMLが本来持っている他の正常なボタン処理をなかったことにする
 
     console.log("追加ボタン押されたよ")
-    
+
     //パラメーター取得
-    //<input required type="text" id="add-firstname" placeholder="First name" name="fn">
+    //<input required type="text" id="add-write_name" placeholder="write_name" name="rn">
     const rn = document.querySelector("#add-write_name").value
-    //<input required type="text" id="add-lastname" placeholder="Last name" name="ln">
+    //<input required type="text" id="add-review_points" placeholder="review_points" name="rp">
     const rp = document.querySelector("#add-review_points").value
-    //<input required type="text" id="add-email" placeholder="Email address" name="em">
+    //<input required type="text" id="add-review" placeholder="review" name="re">
     const re = document.querySelector("#add-review").value
 
     //未入力項目があるエラーメッセージ
@@ -166,6 +166,9 @@ ab.addEventListener("click", (ev) => {
     data.append("rn", rn)
     data.append("rp", rp)
     data.append("re", re)
+
+    //print(document.getElementById('add-write_name').innerHTML)
+
 
     //データ表示
     fetch('/review', {
