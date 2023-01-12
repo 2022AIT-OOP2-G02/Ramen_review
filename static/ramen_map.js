@@ -9,6 +9,7 @@ const main = async () => {
 
     const markers = new Set();
     map.on('moveend', displayRamenShop.bind(null, map, markers));
+    map.on('popupclose', setShopInfo.bind(null, undefined));
 };
 
 const displayRamenShop = async (map, markers) => {
@@ -51,9 +52,22 @@ const getProperRange = (zoom) => {
     return { level: 5, meter: 3000 };
 };
 
-const displayRamenShopDetail = (shopData, e) => {
-    console.log(shopData);
+const displayRamenShopDetail = (shopInfo, e) => {
+    console.log(shopInfo);
     console.log(e);
+    setShopInfo(shopInfo);
+};
+
+const setShopInfo = (shopInfo) => {
+    const mainDom = document.querySelector("#main");
+    if (shopInfo === undefined) {
+        mainDom.classList.remove("show-shop-info");
+        mainDom.classList.add("show-ranking");
+        return;
+    }
+    mainDom.classList.remove("show-ranking");
+    mainDom.classList.add("show-shop-info");
+    mainDom.querySelector("#shop-name").innerText = shopInfo.name;
 };
 
 const fetchRamenShop = async (serchParam) => {

@@ -4,7 +4,7 @@ header {
     margin-bottom: 1em;
 }
 
-#main-wrapper {
+#main {
     margin: 5vh 5vw;
     display: grid;
     height: 90vh;
@@ -33,7 +33,7 @@ header {
     border: 3px solid black;
 }
 
-.show-ranking>#ranking {
+#main.show-ranking #ranking {
     display: block;
 }
 
@@ -45,8 +45,7 @@ header {
     width: 100%;
     border: 3px solid black;
 }
-
-.show-shop-info>#shop-info {
+#main.show-shop-info #shop-info {
     display: block;
 }
 
