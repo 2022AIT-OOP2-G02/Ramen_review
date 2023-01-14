@@ -151,6 +151,10 @@ ab.addEventListener("click", (ev) => {
     if (!rp && rp === "") error_message += "評価点が未入力です。<br>"
     if (!re && re === "") error_message += "レビュー内容が未入力です。<br>"
 
+    //評価点が数字以外の時のエラー処理
+    if (isNaN(rp)) error_message += "整数で入力してください。<br>"
+    if(rp<1 || 100<rp) error_message += "1~100の数字で入力してください。<br>"
+
     //処理中断
     if (error_message !== "") {
         document.getElementById('error-container').innerHTML = error_message
@@ -166,8 +170,6 @@ ab.addEventListener("click", (ev) => {
     data.append("rn", rn)
     data.append("rp", rp)
     data.append("re", re)
-
-    //print(document.getElementById('add-write_name').innerHTML)
 
 
     //データ表示
