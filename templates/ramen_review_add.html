@@ -30,15 +30,21 @@
 </head>
 <body>
     <header>
-        <h1>ラーメン屋レビュー評価</h1>
+        <h1>〇〇屋レビュー</h1>
     </header>
     <main>
         <section>
+            <h3>現在の評価</h3>
+                <div id="review_average"></div>
+                <tbody></tbody>    
+        </section>
+
+        <section>
             <form action="search">
                 <div>
-                    <input type="text" id="search-write_name" placeholder="write_name" name="rn">
-                    <input type="text" id="search-review_points" placeholder="review_points" name="rp">
-                    <input type="text" id="search-review" placeholder="review" name="re">
+                    <input type="text" id="search-write_name" placeholder="ニックネーム" name="rn">
+                    <input type="text" id="search-review_points" placeholder="評価点" name="rp">
+                    <!-- <input type="text" id="search-review" placeholder="内容" name="re"> -->
                     <button id="search-submit">Search</button>
                 </div>
             </form>
@@ -51,8 +57,7 @@
                     <th scope="col">レビュー内容</th>
                 </tr>
             </thead>
-            <tbody>
-            </tbody>
+            <tbody></tbody>
         </table>
 
         <section>
@@ -60,9 +65,9 @@
             <h5>評価点は1~100の整数で入力してください</h5>
             <form id="add">
                 <div>
-                    <input required type="text" id="add-write_name" placeholder="write_name" name="rn">
-                    <input required type="text" id="add-review_points" placeholder="review_points" name="rp">
-                    <input required type="text" id="add-review" placeholder="review" name="re">
+                    <input required type="text" id="add-write_name" placeholder="ニックネーム" name="rn">
+                    <input required type="text" id="add-review_points" placeholder="評価点" name="rp">
+                    <input required type="text" id="add-review" placeholder="コメントを追加" name="re">
                     <button id="add-submit">Add</button>
                 </div>
             </form>
@@ -70,6 +75,11 @@
             <div id="message-container" role="alert" style="display: none;"></div>
             <div id="error-container" role="alert" style="display: none;"></div>
         </section>
+
+        <section>
+            <h3>近くにあるお店</h3>
+        </section>
+
     </main>
     <footer></footer>
 </body>

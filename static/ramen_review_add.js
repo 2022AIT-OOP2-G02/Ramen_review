@@ -4,6 +4,21 @@ fetch("/review").then(response => {
     response.json().then((data) => {
         console.log(data);  // 取得されたレスポンスデータをデバッグ表示
 
+        //評価点の合計表示
+        //const review_average = document.querySelector("#review_average > tbody");
+        let sum = 0;
+        data.forEach(elm => {
+            //console.log(Object.keys(elm).length);
+            const obj = JSON.parse(elm.review_points);
+            //console.log(obj);
+            sum += obj;
+        });
+        console.log(Object.keys(data).length);
+        let sum2 = sum/Object.keys(data).length;
+        let sum3 = Math.trunc(sum2)
+        document.getElementById('review_average').innerHTML = sum3;
+        
+
         // データを表示させる
         const tableBody = document.querySelector("#review-list > tbody");
         data.forEach(elm => {
@@ -21,7 +36,6 @@ fetch("/review").then(response => {
             td = document.createElement('td');
             td.innerText = elm.review;
             tr.appendChild(td);
-
             // 1行分をtableタグ内のtbodyへ追加する
             tableBody.appendChild(tr);
         });
@@ -69,16 +83,16 @@ sb.addEventListener("click", (ev) => {
     console.log("検索ボタン押されたよ")
 
     //クエリパラメータにて、以下の項目を指定できます。
-    //fn: 指定されたキーワードがFirst Nameに含まれるデータを返します。省略時全件。
-    //ln: 指定されたキーワードがLast Nameに含まれるデータを返します。省略時全件。
-    //em: 指定されたキーワードがEmailに含まれるデータを返します。省略時全件。
+    //rn: 指定されたキーワードがreviewに含まれるデータを返します。省略時全件。
+    //rp: 指定されたキーワードがreview_pointsに含まれるデータを返します。省略時全件。
+    //re: 指定されたキーワードがwrite_nameに含まれるデータを返します。省略時全件。
 
     //パラメーター取得
-    //<input type="text" id="search-firstname" placeholder="First name" name="fn">
+    //<input type="text" id="search-write_name" placeholder="ニックネーム" name="fn">
     const rn = document.querySelector("#search-write_name").value
-    //<input type="text" id="search-lastname" placeholder="Last name" name="ln">
+    //<input type="text" id="earch-review_points" placeholder="評価点" name="ln">
     const rp = document.querySelector("#search-review_points").value
-    //<input type="text" id="search-email" placeholder="Email address" name="em">
+    //<input type="text" id="earch-review" placeholder="内容" name="em">
     const re = document.querySelector("#search-review").value
 
     const param = new URLSearchParams
