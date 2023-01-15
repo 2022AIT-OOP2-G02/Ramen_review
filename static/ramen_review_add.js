@@ -93,13 +93,13 @@ sb.addEventListener("click", (ev) => {
     //<input type="text" id="earch-review_points" placeholder="評価点" name="ln">
     const rp = document.querySelector("#search-review_points").value
     //<input type="text" id="earch-review" placeholder="内容" name="em">
-    const re = document.querySelector("#search-review").value
+    //const re = document.querySelector("#search-review").value
 
     const param = new URLSearchParams
 
     if (rn !== "") param.append("rn", rn)
     if (rp !== "") param.append("rp", rp)
-    if (re !== "") param.append("re", re)
+    //if (re !== "") param.append("re", re)
 
     console.log(param.toString())
 
@@ -124,15 +124,15 @@ sb.addEventListener("click", (ev) => {
             data.forEach(elm => {
                 // 1行づつ処理を行う
                 let tr = document.createElement('tr');
-                // first name
+                // 名前
                 let td = document.createElement('td');
                 td.innerText = elm.write_name;
                 tr.appendChild(td);
-                // last name
+                // 評価点
                 td = document.createElement('td');
                 td.innerText = elm.review_points;
                 tr.appendChild(td);
-                // email
+                // レビュー内容
                 td = document.createElement('td');
                 td.innerText = elm.review;
                 tr.appendChild(td);
