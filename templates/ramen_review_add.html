@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<!-- <html lang="ja"> -->
 <head>
     <meta charset="utf-8">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>レビュー追加</title>
-    
-    <!-- <link rel="stylesheet" href="review_add.css" type="text/css"> -->
-
+    <link rel="stylesheet" href="../static/review_add.css" type="text/css">
     <!-- new.css -->
-    <link rel="stylesheet" href="https://fonts.xz.style/serve/inter.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css">
+    <!-- <link rel="stylesheet" href="https://fonts.xz.style/serve/inter.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css"> -->
 
     <!-- メッセージ表示用のCSSを定義 -->
     <style>
@@ -25,62 +24,83 @@
             color: #dc3545;
         }
     </style>
-    
+<script defer src="{{ url_for('static', filename='review_menyu-.js') }}"></script>
 <script defer src="{{ url_for('static', filename='ramen_review_add.js') }}"></script>
 </head>
 <body>
-    <header>
-        <h1>〇〇屋レビュー</h1>
-    </header>
-    <main>
-        <section>
-            <h3>現在の評価</h3>
-                <div id="review_average"></div>
-                <tbody></tbody>    
-        </section>
-
-        <section>
-            <form action="search">
-                <div>
-                    <input type="text" id="search-write_name" placeholder="ニックネーム" name="rn">
-                    <input type="text" id="search-review_points" placeholder="評価点" name="rp">
-                    <!-- <input type="text" id="search-review" placeholder="内容" name="re"> -->
-                    <button id="search-submit">Search</button>
+    <section>
+        <div id="wrapper">
+            <header>
+                <div class="container">
+                    <div class="title-block">
+                        <h1>〇〇屋レビュー</h1>
+                    </div>
+                    <div class="hamburger" id="open_nav">
+                        <img src="{{ url_for('static', filename='hamburger.png') }}" alt="gu">
+                    </div>
                 </div>
-            </form>
-        </section>
-        <table id="review-list">
-            <thead>
-                <tr>
-                    <th scope="col">名前</th>
-                    <th scope="col">評価点</th>
-                    <th scope="col">レビュー内容</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-
-        <section>
-            <h3>評価の追加</h3>
-            <h5>評価点は1~100の整数で入力してください</h5>
-            <form id="add">
-                <div>
-                    <input required type="text" id="add-write_name" placeholder="ニックネーム" name="rn">
-                    <input required type="text" id="add-review_points" placeholder="評価点" name="rp">
-                    <input required type="text" id="add-review" placeholder="コメントを追加" name="re">
-                    <button id="add-submit">Add</button>
-                </div>
-            </form>
-            <!-- メッセージの表示領域  -->
-            <div id="message-container" role="alert" style="display: none;"></div>
-            <div id="error-container" role="alert" style="display: none;"></div>
-        </section>
-
-        <section>
-            <h3>近くにあるお店</h3>
-        </section>
-
-    </main>
+            </header>
+            <main>
+                <section>
+                    <h3>現在の評価</h3>
+                        <div id="review_average"></div>
+                        <tbody></tbody>    
+                </section>
+                <section>
+                    <form action="search">
+                        <div>
+                            <input type="text" id="search-write_name" placeholder="ニックネーム" name="rn">
+                            <input type="text" id="search-review_points" placeholder="評価点" name="rp">
+                            <!-- <input type="text" id="search-review" placeholder="内容" name="re"> -->
+                            <button id="search-submit">Search</button>
+                        </div>
+                    </form>
+                </section>
+                <table id="review-list">
+                    <thead>
+                        <tr>
+                            <th scope="col">名前</th>
+                            <th scope="col">評価点</th>
+                            <th scope="col">レビュー内容</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <section>
+                    <h3>評価の追加</h3>
+                    <h5>評価点は1~100の整数で入力してください</h5>
+                    <form id="add">
+                        <div>
+                            <input required type="text" id="add-write_name" placeholder="ニックネーム" name="rn">
+                            <input required type="text" id="add-review_points" placeholder="評価点" name="rp">
+                            <input required type="text" id="add-review" placeholder="コメントを追加" name="re">
+                            <button id="add-submit">Add</button>
+                        </div>
+                    </form>
+                    <!-- メッセージの表示領域  -->
+                    <div id="message-container" role="alert" style="display: none;"></div>
+                    <div id="error-container" role="alert" style="display: none;"></div>
+                </section>
+                <section>
+                    <h3>近くにあるお店</h3>
+                </section>
+            </main>
+        </div>
+    </section>
+    <nav id="nav">
+        <h1>メニュー</h1>
+        <ul>
+            <li>
+                <a href="/">Home</a>
+            </li>
+            <li>
+                <a href="#">使い方</a>
+            </li>
+        </ul>
+    </nav>
     <footer></footer>
 </body>
 </html>
+
+
+
