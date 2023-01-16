@@ -11,6 +11,16 @@ app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
 app.config["DEBUG"] = True
 
+# プロジェクトのトップ
+@app.route('/')
+def index():
+    return render_template("ramen_map.html")
+
+# レビュー評価画面呼び出し
+@app.route('/review')
+def review():
+    return render_template("ramen_review_add.html")
+
 @app.route('/ramen-map', methods=["GET"])
 def ramen_map():
     return render_template("ramen_map.html")
@@ -104,10 +114,6 @@ def review_post():
         "result": "レビューの登録が完了しました。",
         "json_data": json_data
     })
-
-@app.route('/')
-def index():
-    return render_template("ramen_review_add.html")
 
 if __name__ == "__main__":
     app.run(port=PORT)

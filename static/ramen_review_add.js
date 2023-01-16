@@ -4,6 +4,21 @@ fetch("/review").then(response => {
     response.json().then((data) => {
         console.log(data);  // 取得されたレスポンスデータをデバッグ表示
 
+        //評価点の合計表示
+        //const review_average = document.querySelector("#review_average > tbody");
+        let sum = 0;
+        data.forEach(elm => {
+            //console.log(Object.keys(elm).length);
+            const obj = JSON.parse(elm.review_points);
+            //console.log(obj);
+            sum += obj;
+        });
+        console.log(Object.keys(data).length);
+        let sum2 = sum/Object.keys(data).length;
+        let sum3 = Math.trunc(sum2)
+        document.getElementById('review_average').innerHTML = sum3;
+        
+
         // データを表示させる
         const tableBody = document.querySelector("#review-list > tbody");
         data.forEach(elm => {
@@ -21,7 +36,6 @@ fetch("/review").then(response => {
             td = document.createElement('td');
             td.innerText = elm.review;
             tr.appendChild(td);
-
             // 1行分をtableタグ内のtbodyへ追加する
             tableBody.appendChild(tr);
         });
@@ -69,23 +83,23 @@ sb.addEventListener("click", (ev) => {
     console.log("検索ボタン押されたよ")
 
     //クエリパラメータにて、以下の項目を指定できます。
-    //fn: 指定されたキーワードがFirst Nameに含まれるデータを返します。省略時全件。
-    //ln: 指定されたキーワードがLast Nameに含まれるデータを返します。省略時全件。
-    //em: 指定されたキーワードがEmailに含まれるデータを返します。省略時全件。
+    //rn: 指定されたキーワードがreviewに含まれるデータを返します。省略時全件。
+    //rp: 指定されたキーワードがreview_pointsに含まれるデータを返します。省略時全件。
+    //re: 指定されたキーワードがwrite_nameに含まれるデータを返します。省略時全件。
 
     //パラメーター取得
-    //<input type="text" id="search-firstname" placeholder="First name" name="fn">
+    //<input type="text" id="search-write_name" placeholder="ニックネーム" name="fn">
     const rn = document.querySelector("#search-write_name").value
-    //<input type="text" id="search-lastname" placeholder="Last name" name="ln">
+    //<input type="text" id="earch-review_points" placeholder="評価点" name="ln">
     const rp = document.querySelector("#search-review_points").value
-    //<input type="text" id="search-email" placeholder="Email address" name="em">
-    const re = document.querySelector("#search-review").value
+    //<input type="text" id="earch-review" placeholder="内容" name="em">
+    //const re = document.querySelector("#search-review").value
 
     const param = new URLSearchParams
 
     if (rn !== "") param.append("rn", rn)
     if (rp !== "") param.append("rp", rp)
-    if (re !== "") param.append("re", re)
+    //if (re !== "") param.append("re", re)
 
     console.log(param.toString())
 
@@ -110,15 +124,15 @@ sb.addEventListener("click", (ev) => {
             data.forEach(elm => {
                 // 1行づつ処理を行う
                 let tr = document.createElement('tr');
-                // first name
+                // 名前
                 let td = document.createElement('td');
                 td.innerText = elm.write_name;
                 tr.appendChild(td);
-                // last name
+                // 評価点
                 td = document.createElement('td');
                 td.innerText = elm.review_points;
                 tr.appendChild(td);
-                // email
+                // レビュー内容
                 td = document.createElement('td');
                 td.innerText = elm.review;
                 tr.appendChild(td);
@@ -151,6 +165,10 @@ ab.addEventListener("click", (ev) => {
     if (!rp && rp === "") error_message += "評価点が未入力です。<br>"
     if (!re && re === "") error_message += "レビュー内容が未入力です。<br>"
 
+    //評価点が数字以外の時のエラー処理
+    if (isNaN(rp)) error_message += "整数で入力してください。<br>"
+    if(rp<1 || 100<rp) error_message += "1~100の数字で入力してください。<br>"
+
     //処理中断
     if (error_message !== "") {
         document.getElementById('error-container').innerHTML = error_message
@@ -166,8 +184,6 @@ ab.addEventListener("click", (ev) => {
     data.append("rn", rn)
     data.append("rp", rp)
     data.append("re", re)
-
-    //print(document.getElementById('add-write_name').innerHTML)
 
 
     //データ表示
