@@ -21,6 +21,10 @@ def index():
 def review():
     return render_template("ramen_review_add.html")
 
+@app.route('/review/review_add')
+def review_add():
+    return render_template("ramen_review_add2.html")
+
 @app.route('/ramen-map', methods=["GET"])
 def ramen_map():
     return render_template("ramen_map.html")
@@ -34,6 +38,7 @@ def ramen_shop():
     r = requests.get("http://webservice.recruit.co.jp/hotpepper/gourmet/v1/", args)
     return r.json()
 
+# レビュー評価画面呼び出し
 @app.route('/review', methods=["GET"])
 def review_get():
     # 検索パラメータの取得
@@ -43,7 +48,7 @@ def review_get():
 
     print(p_write_name,p_review_points,p_review)
 
-    with open('ramen_review.json') as f:
+    with open('/ramen_review.json') as f:
         json_data = json.load(f) #データ型に変換
 
     # パラメータにより返すデータをフィルタリングする
@@ -54,10 +59,11 @@ def review_get():
     if p_review is not None:
         json_data = list(filter(lambda item: p_review.lower() in item["review"].lower(), json_data))
 
-    return jsonify(json_data)
+    return jsonify('ramen_review_add.html',
+                    json_data)
 
 # データ登録
-@app.route('/review', methods=["POST"])
+@app.route('/review/review_add', methods=["POST"])
 def review_post():
     # 検索パラメータの取得
     p_write_name = request.form.get('rn',None)
@@ -110,7 +116,7 @@ def review_post():
     #更新
     with open('ramen_review.json') as h:
         json_data = json.load(h)
-    return jsonify({
+    return jsonify('ramen_review_add2.html',{
         "result": "レビューの登録が完了しました。",
         "json_data": json_data
     })
