@@ -4,12 +4,11 @@
     <meta charset="utf-8">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>レビュー追加</title>
+    <title>レビュー画面</title>
     <link rel="stylesheet" href="../static/review_add.css" type="text/css">
     <!-- new.css -->
     <!-- <link rel="stylesheet" href="https://fonts.xz.style/serve/inter.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css"> -->
-
     <!-- メッセージ表示用のCSSを定義 -->
     <style>
         #message-container,
@@ -56,31 +55,19 @@
                         </div>
                     </form>
                 </section>
-                <table id="review-list">
-                    <thead>
-                        <tr>
-                            <th scope="col">名前</th>
-                            <th scope="col">評価点</th>
-                            <th scope="col">レビュー内容</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
                 <section>
-                    <h3>評価の追加</h3>
-                    <h5>評価点は1~100の整数で入力してください</h5>
-                    <form id="add">
-                        <div>
-                            <input required type="text" id="add-write_name" placeholder="ニックネーム" name="rn">
-                            <input required type="text" id="add-review_points" placeholder="評価点" name="rp">
-                            <input required type="text" id="add-review" placeholder="コメントを追加" name="re">
-                            <button id="add-submit">Add</button>
-                        </div>
-                    </form>
-                    <!-- メッセージの表示領域  -->
-                    <div id="message-container" role="alert" style="display: none;"></div>
-                    <div id="error-container" role="alert" style="display: none;"></div>
+                    <table id="review-list">
+                        <thead>
+                            <tr>
+                                <th scope="col">名前</th>
+                                <th scope="col">評価点</th>
+                                <th scope="col">レビュー内容</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
                 </section>
+                <li><a href="/review/review_add">レビュー追加</a></li>
                 <section>
                     <h3>近くにあるお店</h3>
                 </section>
