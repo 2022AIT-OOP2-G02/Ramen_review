@@ -46,14 +46,18 @@
                         <tbody></tbody>    
                 </section>
                 <section>
-                    <form action="search">
-                        <div>
-                            <input type="text" id="search-write_name" placeholder="ニックネーム" name="rn">
-                            <input type="text" id="search-review_points" placeholder="評価点" name="rp">
-                            <!-- <input type="text" id="search-review" placeholder="内容" name="re"> -->
-                            <button id="search-submit">Search</button>
-                        </div>
-                    </form>
+                    <div class="wrap">
+                        <form role="search" method="get" action="search">
+                            <div>
+                                <h3>ニックネーム</h3>
+                                <input type="text" id="search-write_name" placeholder="" name="rn">
+                                <h3>評価点</h3>
+                                <input type="text" id="search-review_points" placeholder="" name="rp">
+                                <!-- <input type="text" id="search-review" placeholder="内容" name="re"> -->
+                                <button id="search-submit">Search</button>
+                            </div>
+                        </form>
+                    </div>
                 </section>
                 <section>
                     <table id="review-list">
