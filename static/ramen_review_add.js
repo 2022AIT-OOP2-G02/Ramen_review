@@ -1,11 +1,13 @@
 // データの初期表示
-fetch("/review").then(response => {
+fetch("/review_get").then(response => {
     console.log(response);
     response.json().then((data) => {
         console.log(data);  // 取得されたレスポンスデータをデバッグ表示
 
         //評価点の合計表示
         //const review_average = document.querySelector("#review_average > tbody");
+
+
         let sum = 0;
         data.forEach(elm => {
             //console.log(Object.keys(elm).length);
