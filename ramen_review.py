@@ -62,7 +62,7 @@ def review_get():
     return jsonify(json_data)
 
 # データ登録
-@app.route('/review/review_add', methods=["POST"])
+@app.route('/review/review_add_post', methods=["POST"])
 def review_post():
     # 検索パラメータの取得
     p_write_name = request.form.get('rn',None)
