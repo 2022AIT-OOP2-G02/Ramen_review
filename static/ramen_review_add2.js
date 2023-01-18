@@ -41,7 +41,7 @@ ab.addEventListener("click", (ev) => {
 
 
     //データ表示
-    fetch('/review', {
+    fetch('/review/review_add_post', {
         method: 'POST',
         body: data,
     }).then((response) => {
