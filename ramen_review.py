@@ -16,15 +16,6 @@ app.config["DEBUG"] = True
 def index():
     return render_template("ramen_map.html")
 
-# レビュー評価画面呼び出し
-@app.route('/review')
-def review():
-    return render_template("ramen_review_add.html")
-
-@app.route('/review/review_add')
-def review_add():
-    return render_template("ramen_review_add2.html")
-
 @app.route('/ramen-map', methods=["GET"])
 def ramen_map():
     return render_template("ramen_map.html")
@@ -37,6 +28,15 @@ def ramen_shop():
     args.add("key", API_KEY)
     r = requests.get("http://webservice.recruit.co.jp/hotpepper/gourmet/v1/", args)
     return r.json()
+
+# レビュー評価画面呼び出し
+@app.route('/review')
+def review():
+    return render_template("ramen_review_add.html")
+
+@app.route('/review/review_add')
+def review_add():
+    return render_template("ramen_review_add2.html")
 
 # レビュー評価画面呼び出し
 @app.route('/review', methods=["GET"])
