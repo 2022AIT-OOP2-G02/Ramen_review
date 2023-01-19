@@ -7,5 +7,9 @@
 python-dotenvが必要なので入れてないなら`pip install python-dotenv`が必要
 また、`.env.sample`ファイルを参考に`.env`ファイルを作り、APIキーを設定しておくこと
 
-データベースmongodb使用のためインストールが必要
+データベースmongodb使用のためインストールが必要   
 mongodb mac installで検索してもらうとできると思います
+
+＜こちらだけで使用できるかも＞
+vscodeで使用するために拡張機能MongoDB for VS Codeの追加をする
+コマンド　pip install pymongo　
