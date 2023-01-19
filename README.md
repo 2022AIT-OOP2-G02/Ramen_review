@@ -8,16 +8,17 @@ python-dotenvが必要なので入れてないなら`pip install python-dotenv`�
 また、`.env.sample`ファイルを参考に`.env`ファイルを作り、APIキーを設定しておくこと
 
 ＜データベースmongodb使用のためインストールが必要＞
-1.brew updateでHomebrewをアップデート
-2.brew tap mongodb/brewでtapのインストール
-3.brew install mongodb-communityでmongodb-communityのインストール
-4.vscodeで拡張機能"MongoDB for VS Code"の追加をする
-5.インストールするとMONGODBタブが表示される
-6.CONNECTIONS欄にあるAdd Connectionを選択しMongoDB接続プロファイルを作成する
-7.openformをクリック
-8.画面に情報を入力(localhost:27017)入力したらConnect
-9.成功していたら"successfully connected to localhost:27017"というメッセージが出る
-10.成功したらタブを閉じて終了
+1. $ brew updateでHomebrewをアップデート
+2. $ brew tap mongodb/brewでtapのインストール
+3. $ brew install mongodb-communityでmongodb-communityのインストール
+4. $ brew services start mongodb-community でMongoDBを起動(停止する際は brew services stop mongodb-community)
+5. vscodeで拡張機能"MongoDB for VS Code"の追加をする
+6. インストールするとMONGODBタブが表示される
+7. CONNECTIONS欄にあるAdd Connectionを選択しMongoDB接続プロファイルを作成する
+8. openformをクリック
+9. 画面に情報を入力(localhost:27017)入力したらConnect
+10. 成功していたら"successfully connected to localhost:27017"というメッセージが出る
+11. 成功したらタブを閉じて終了
 vscode上のターミナルでコマンド　pip install pymongo　を打ち込みpymongoを使えるようにする　
 
 <確認方法>
