@@ -13,3 +13,9 @@ mongodb mac installで検索してもらうとできると思います
 ＜こちらだけで使用できるかも＞
 vscodeで使用するために拡張機能MongoDB for VS Codeの追加をする
 コマンド　pip install pymongo　
+
+インストールするとMONGODBタブが表示される
+CONNECTIONS欄にあるAdd Connectionを選択しMongoDB接続プロファイルを作成する
+画面に情報を入力(localhost:27017)入力したらConnect
+成功していたら"successfully connected to localhost:27017"というメッセージが出る
+成功したらタブは閉じて良い
