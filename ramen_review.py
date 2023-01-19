@@ -8,8 +8,8 @@ from datetime import datetime
 
 class Mongo(object):
     def __init__(self):
-         self.clint = MongoClient()
-         self.db = self.clint['test']
+        self.clint = MongoClient()
+        self.db = self.clint['test']
 
     def add_one(self,wn,rp,re):
         """データ挿入"""
@@ -86,6 +86,7 @@ def review_get():
 def review_post():
     # 検索パラメータの取得
     p_write_name = request.form.get('rn',None)
+    print(p_write_name)
     p_review_points = request.form.get('rp',None)
     p_review = request.form.get('re',None)
 
@@ -104,12 +105,22 @@ def review_post():
             "error": error_message
         })
     
-    rest = obj.add_one(p_write_name,p_review_points,p_review)
+    
+    rest = obj.add_one(p_write_name, p_review_points, p_review)
     print(rest)
+    for data in (obj.db.test).find():
+        print(data)
+    json_data = (obj.db.test).products.find()
+    print(json_data)
+
+    return jsonify({
+        "result": "データの登録が完了しました。",
+        "json_data": json_data
+    })
 
     #データベースからすべてのデータを持ってくる
 
-    return jsonify()
+
 
 if __name__ == "__main__":
     app.run(port=PORT)
