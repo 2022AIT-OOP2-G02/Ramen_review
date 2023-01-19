@@ -1,5 +1,84 @@
-#map {
-    height: 90vh;
-    width: 90vw;
+#main {
     margin: 5vh 5vw;
+    display: grid;
+    height: 90vh;
+    gap: 2em;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 5em 1fr;
+    grid-template-areas:
+        "search map"
+        "ranking map";
+}
+
+#search-wrapper {
+    grid-area: search;
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    border: 3px solid black;
+}
+
+#ranking {
+    display: block;
+    grid-area: ranking;
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    border: 3px solid black;
+}
+
+#main:not([data-show='ranking']) #ranking {
+    display: none;
+}
+
+#shop-info {
+    display: grid;
+    grid-area: ranking;
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    border: 3px solid black;
+
+    grid-template-columns: 5em 1fr;
+    grid-template-rows: 1em 3em 1fr;
+    grid-template-areas:
+        "logo-image name-kana"
+        "logo-image name"
+        "none review";
+    grid-gap: 1em;
+}
+
+#main:not([data-show='shop-info']) #shop-info {
+    display: none;
+}
+
+#shop-logo-image {
+    grid-area: logo-image;
+}
+
+#shop-name-kana {
+    grid-area: name-kana;
+}
+
+#shop-name {
+    grid-area: name;
+    font-size: 2em;
+}
+
+#shop-open {
+    grid-area: open;
+}
+
+#shop-close {
+    grid-area: close;
+}
+
+#shop-review {
+    grid-area: review;
+}
+
+#map {
+    grid-area: map;
+    height: 100%;
+    width: 100%;
 }
