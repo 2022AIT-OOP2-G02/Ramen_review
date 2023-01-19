@@ -8,8 +8,8 @@ from datetime import datetime
 
 class Mongo(object):
     def __init__(self):
-        self.clint = MongoClient()
-        self.db = self.clint['test']
+         self.clint = MongoClient()
+         self.db = self.clint['test']
 
     def add_one(self,wn,rp,re):
         """データ挿入"""
