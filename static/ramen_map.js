@@ -15,10 +15,13 @@ const main = async () => {
 const displayRamenShop = async (map, markers) => {
     const center = map.getCenter();
     const range = getProperRange(map.getZoom());
-    const json = await fetchRamenShop({
+    const ramenShopsData = await fetchWithParams("/api/ramen-shop", {
         lat: center.lat,
         lng: center.lng,
         range: range.level,
+        genre: "G013",
+        format: "json",
+        count: 100
     });
 
     for (const marker of markers) {
@@ -35,7 +38,7 @@ const displayRamenShop = async (map, markers) => {
     circle.addTo(map);
     markers.add(circle);
 
-    for (const shop of json.shop) {
+    for (const shop of ramenShopsData.results.shop) {
         const marker = L.marker([shop.lat, shop.lng]);
         marker.bindPopup(shop.name);
         marker.addTo(map);
@@ -59,12 +62,7 @@ const displayRamenShopDetail = (shopInfo, e) => {
 };
 
 const setShopInfo = async (shopInfo) => {
-    const url = new URL("/review", window.location);
-    url.search = new URLSearchParams({ id: shopInfo.id });
-    const response = await fetch(url);
-    if (!response.ok) throw Error(response);
-    const reviewData = await response.json() ?? [];
-    console.log(reviewData);
+    const reviewData = await fetchWithParams('/review', { id: shopInfo.id }) ?? [];
     const reviewDataHtml = reviewData.map(v =>
         `<div class="review-item">
             <div class="write-name">${v.write_name}</div>
@@ -88,21 +86,15 @@ const setShopInfo = async (shopInfo) => {
     mainDom.querySelector("#shop-review").innerHTML = reviewDataHtml;
 };
 
-const fetchRamenShop = async (serchParam) => {
-    const url = new URL("/api/ramen-shop", window.location);
-    url.search = new URLSearchParams({
-        ...serchParam,
-        genre: "G013",
-        format: "json",
-        count: 100
-    });
+const fetchWithParams = async (urlStr, params) => {
+    const url = urlStr.startsWith("/") ? new URL(urlStr, window.location) : new URL(urlStr);
+    url.search = new URLSearchParams(params);
     const response = await fetch(url);
     if (!response.ok) {
         console.error(response);
         return;
     };
-    const json = await response.json();
-    return json.results;
-};
+    return await response.json();
+}
 
 window.onload = main;
