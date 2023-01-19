@@ -107,5 +107,9 @@ def review_post():
     rest = obj.add_one(p_write_name,p_review_points,p_review)
     print(rest)
 
+    #データベースからすべてのデータを持ってくる
+
+    return jsonify()
+
 if __name__ == "__main__":
     app.run(port=PORT)
