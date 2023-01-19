@@ -1,9 +1,3 @@
-header {
-    height: 5em;
-    border: 3px solid black;
-    margin-bottom: 1em;
-}
-
 #main {
     margin: 5vh 5vw;
     display: grid;
@@ -46,43 +40,41 @@ header {
     border: 3px solid black;
 
     grid-template-columns: 5em 1fr;
-    grid-template-rows: 1em 3em 1em 1em 1fr;
+    grid-template-rows: 1em 3em 1fr;
     grid-template-areas:
         "logo-image name-kana"
         "logo-image name"
-        "none open"
-        "none close"
         "none review";
     grid-gap: 1em;
 }
 
+#main:not([data-show='shop-info']) #shop-info {
+    display: none;
+}
+
 #shop-logo-image {
-    grid-area: logo-image
+    grid-area: logo-image;
 }
 
 #shop-name-kana {
-    grid-area: name-kana
+    grid-area: name-kana;
 }
 
 #shop-name {
-    grid-area: name
+    grid-area: name;
+    font-size: 2em;
 }
 
 #shop-open {
-    grid-area: open
+    grid-area: open;
 }
 
 #shop-close {
-    grid-area: close
+    grid-area: close;
 }
 
 #shop-review {
-    grid-area: review
-}
-
-
-#main:not([data-show='shop-info']) #shop-info {
-    display: none;
+    grid-area: review;
 }
 
 #map {

@@ -65,9 +65,9 @@ const setShopInfo = async (shopInfo) => {
     const reviewData = await fetchWithParams('/review', { id: shopInfo.id }) ?? [];
     const reviewDataHtml = reviewData.map(v =>
         `<div class="review-item">
-            <div class="write-name">${v.write_name}</div>
-            <div class="review-point">${v.review_point}</div>
-            <div class="review">${v.review}</div>
+            <div class="write-name">${v.write_name ?? "No Name"}</div>
+            <div class="review-point">${v.review_point ?? 0}</div>
+            <div class="review">${v.review ?? "レビューはありません"}</div>
         </div>`
     ).join("");
 
@@ -81,8 +81,6 @@ const setShopInfo = async (shopInfo) => {
     mainDom.querySelector("#shop-logo-image").src = shopInfo.logo_image;
     mainDom.querySelector("#shop-name-kana").innerText = shopInfo.name_kana;
     mainDom.querySelector("#shop-name").innerText = shopInfo.name;
-    mainDom.querySelector("#shop-open").innerText = shopInfo.open;
-    mainDom.querySelector("#shop-close").innerText = shopInfo.close;
     mainDom.querySelector("#shop-review").innerHTML = reviewDataHtml;
 };
 
