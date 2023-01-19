@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>レビュー追加</title>
     <link rel="stylesheet" href="../static/review_add.css" type="text/css">
+    <link rel="stylesheet" href="../static/review_add2.css" type="text/css">
     <!-- メッセージ表示用のCSSを定義 -->
     <style>
         #message-container,
@@ -39,12 +40,17 @@
             </header>
             <main>
                 <section>
-                    <h2>評価点は1~100の整数で入力してください</h2>
+                    <h2 id="write_name">ニックネーム:</h2>
+                    <h2 id="rate">総合評価:</h2>
+                    <h2 id="score">点</h2>
+                    <h2 id="review">レビューを追加</h2>
+                    <h2 id="first-line"></h2>
+                    <h2 id="second-line"></h2>
                     <form id="add">
                         <div>
                             <input required type="text" id="add-write_name" placeholder="ニックネーム" name="rn">
-                            <input required type="text" id="add-review_points" placeholder="評価点" name="rp">
-                            <input required type="text" id="add-review" placeholder="コメントを追加" name="re">
+                            <input required type="text" id="add-review_points" placeholder="0~100" name="rp">
+                            <input required type="text" id="add-review" placeholder="感想や満足したポイント / 不満だったポイントなど" name="re">
                             <button id="add-submit">投稿</button>
                         </div>
                     </form>
