@@ -7,3 +7,5 @@
 python-dotenvが必要なので入れてないなら`pip install python-dotenv`が必要
 また、`.env.sample`ファイルを参考に`.env`ファイルを作り、APIキーを設定しておくこと
 
+データベースmongodb使用のためインストールが必要
+mongodb mac installで検索してもらうとできると思います

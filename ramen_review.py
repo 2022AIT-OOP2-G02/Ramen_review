@@ -3,6 +3,26 @@ from dotenv import load_dotenv
 load_dotenv()
 import json
 import requests, os
+from pymongo import MongoClient
+from datetime import datetime
+
+class Mongo(object):
+    def __init__(self):
+         self.clint = MongoClient()
+         self.db = self.clint['test']
+
+    def add_one(self,wn,rp,re):
+        """データ挿入"""
+        post = {
+            #'shop_name': p_write_name,
+            'write_name': wn,
+            'review_points': rp,
+            'review':re,
+            'created_at': datetime.now()
+        }
+        return self.db.test.insert_one(post)
+
+obj = Mongo()
 
 PORT = os.getenv("PORT")
 API_KEY = os.getenv("API_KEY")
@@ -10,6 +30,20 @@ API_KEY = os.getenv("API_KEY")
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
 app.config["DEBUG"] = True
+
+# プロジェクトのトップ
+@app.route('/')
+def index():
+    return render_template("ramen_map.html")
+
+# レビュー評価画面呼び出し
+@app.route('/review')
+def review():
+    return render_template("ramen_review_add.html")
+
+@app.route('/review/review_add')
+def review_add():
+    return render_template("ramen_review_add2.html")
 
 @app.route('/ramen-map', methods=["GET"])
 def ramen_map():
@@ -24,7 +58,8 @@ def ramen_shop():
     r = requests.get("http://webservice.recruit.co.jp/hotpepper/gourmet/v1/", args)
     return r.json()
 
-@app.route('/review', methods=["GET"])
+# レビュー評価画面呼び出し
+@app.route('/review_get', methods=["GET"])
 def review_get():
     # 検索パラメータの取得
     p_write_name = request.args.get('rn',None)
@@ -47,7 +82,7 @@ def review_get():
     return jsonify(json_data)
 
 # データ登録
-@app.route('/review', methods=["POST"])
+@app.route('/review/review_add_post', methods=["POST"])
 def review_post():
     # 検索パラメータの取得
     p_write_name = request.form.get('rn',None)
@@ -68,46 +103,9 @@ def review_post():
         return jsonify({
             "error": error_message
         })
-
-    #受け取ったパラメータを「ramen_review.json」のファイルに追記する
-    try:
-        with open('ramen_review.json') as h:
-            json_data = json.load(h) #データ型に変換
-        #パラメータを設定
-        item = {
-            "write_name": p_write_name,
-            "review_points": p_review_points,
-            "review": p_review,
-        }
-        # JSONに追加
-        json_data.append(item)
-
-        with open('ramen_review.json', 'w') as h:
-            json.dump(json_data, h, 
-                    ensure_ascii = False,
-                    indent = 4,
-                    sort_keys = True,
-                    separators = (',', ': '))
-
-    #例外失敗
-    except IOError as e:
-        import traceback
-        traceback.print_exc()
-        return jsonify({
-            "error": f"レビュー処理に失敗しました。<pre>{ e.args }</pre>"
-        })
-        
-    #更新
-    with open('ramen_review.json') as h:
-        json_data = json.load(h)
-    return jsonify({
-        "result": "レビューの登録が完了しました。",
-        "json_data": json_data
-    })
-
-@app.route('/')
-def index():
-    return render_template("ramen_review_add.html")
+    
+    rest = obj.add_one(p_write_name,p_review_points,p_review)
+    print(rest)
 
 if __name__ == "__main__":
     app.run(port=PORT)
