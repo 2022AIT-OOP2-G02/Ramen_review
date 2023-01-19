@@ -25,7 +25,7 @@ header {
 }
 
 #ranking {
-    display: none;
+    display: block;
     grid-area: ranking;
     box-sizing: border-box;
     height: 100%;
@@ -33,20 +33,56 @@ header {
     border: 3px solid black;
 }
 
-#main.show-ranking #ranking {
-    display: block;
+#main:not([data-show='ranking']) #ranking {
+    display: none;
 }
 
 #shop-info {
-    display: none;
+    display: grid;
     grid-area: ranking;
     box-sizing: border-box;
     height: 100%;
     width: 100%;
     border: 3px solid black;
+
+    grid-template-columns: 5em 1fr;
+    grid-template-rows: 1em 3em 1em 1em 1fr;
+    grid-template-areas:
+        "logo-image name-kana"
+        "logo-image name"
+        "none open"
+        "none close"
+        "none review";
+    grid-gap: 1em;
 }
-#main.show-shop-info #shop-info {
-    display: block;
+
+#shop-logo-image {
+    grid-area: logo-image
+}
+
+#shop-name-kana {
+    grid-area: name-kana
+}
+
+#shop-name {
+    grid-area: name
+}
+
+#shop-open {
+    grid-area: open
+}
+
+#shop-close {
+    grid-area: close
+}
+
+#shop-review {
+    grid-area: review
+}
+
+
+#main:not([data-show='shop-info']) #shop-info {
+    display: none;
 }
 
 #map {

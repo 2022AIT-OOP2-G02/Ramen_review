@@ -58,16 +58,34 @@ const displayRamenShopDetail = (shopInfo, e) => {
     setShopInfo(shopInfo);
 };
 
-const setShopInfo = (shopInfo) => {
+const setShopInfo = async (shopInfo) => {
+    const url = new URL("/review", window.location);
+    url.search = new URLSearchParams({ id: shopInfo.id });
+    const response = await fetch(url);
+    if (!response.ok) throw Error(response);
+    const reviewData = await response.json() ?? [];
+    console.log(reviewData);
+    const reviewDataHtml = reviewData.map(v =>
+        `<div class="review-item">
+            <div class="write-name">${v.write_name}</div>
+            <div class="review-point">${v.review_point}</div>
+            <div class="review">${v.review}</div>
+        </div>`
+    ).join("");
+
     const mainDom = document.querySelector("#main");
     if (shopInfo === undefined) {
-        mainDom.classList.remove("show-shop-info");
-        mainDom.classList.add("show-ranking");
+        mainDom.dataset.show = 'ranking'
         return;
     }
-    mainDom.classList.remove("show-ranking");
-    mainDom.classList.add("show-shop-info");
+    mainDom.dataset.show = 'shop-info'
+
+    mainDom.querySelector("#shop-logo-image").src = shopInfo.logo_image;
+    mainDom.querySelector("#shop-name-kana").innerText = shopInfo.name_kana;
     mainDom.querySelector("#shop-name").innerText = shopInfo.name;
+    mainDom.querySelector("#shop-open").innerText = shopInfo.open;
+    mainDom.querySelector("#shop-close").innerText = shopInfo.close;
+    mainDom.querySelector("#shop-review").innerHTML = reviewDataHtml;
 };
 
 const fetchRamenShop = async (serchParam) => {
