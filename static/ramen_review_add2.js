@@ -1,3 +1,29 @@
+//データ表示
+const show_data = (data) => {
+    const tableBody = document.querySelector("#review-list > tbody")
+    tableBody.innerHTML = ""
+    //レスポンスのJSONデータの件数が0だった場合
+    if (data && data.length == 0) {
+        let tr = document.createElement('tr')
+        tr.innerHTML = "表示するデータがありません。"
+        tableBody.appendChild(tr)
+        return
+    }
+    data.forEach(elm => {
+        let tr = document.createElement('tr')
+        let td = document.createElement('td')
+        td.textContent = elm.write_name
+        tr.appendChild(td)
+        td = document.createElement('td')
+        td.textContent = elm.review_points
+        tr.appendChild(td)
+        td = document.createElement('td')
+        td.textContent = elm.review
+        tr.appendChild(td)
+        //追加
+        tableBody.appendChild(tr)
+    })
+}
 //<button id="add-submit">Add</button>
 const ab = document.querySelector("#add-submit")
 ab.addEventListener("click", (ev) => {
