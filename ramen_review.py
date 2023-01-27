@@ -5,6 +5,7 @@ import json
 import requests, os
 from pymongo import MongoClient
 from datetime import datetime
+from bson.json_util import dumps
 
 class Mongo(object):
     def __init__(self):
@@ -21,6 +22,11 @@ class Mongo(object):
             'created_at': datetime.now()
         }
         return self.db.test.insert_one(post)
+
+    
+    def get_all(self):
+        """データ取得"""
+        return self.db.test.find()
 
 obj = Mongo()
 
@@ -39,7 +45,22 @@ def index():
 # レビュー評価画面呼び出し
 @app.route('/review')
 def review():
+    #print(dumps((obj.db.test).find()))
     return render_template("ramen_review_add.html")
+
+@app.route('/review')
+def reviews(): 
+    data = obj.get_all()
+    print("xxxx")
+    
+    #for data_list in (obj.db.test).find():
+        #datas=reviews.form_doc(data_list)
+        #data.append(data_list)
+        #print(data)
+    
+    #data=obj.get_all()
+    #print(data)
+    return jsonify(data)
 
 @app.route('/review/review_add')
 def review_add():
@@ -86,7 +107,7 @@ def review_get():
 def review_post():
     # 検索パラメータの取得
     p_write_name = request.form.get('rn',None)
-    print(p_write_name)
+    #print(p_write_name)
     p_review_points = request.form.get('rp',None)
     p_review = request.form.get('re',None)
 
@@ -105,22 +126,26 @@ def review_post():
             "error": error_message
         })
     
-    
+    #データベースに追加
     rest = obj.add_one(p_write_name, p_review_points, p_review)
-    print(rest)
-    for data in (obj.db.test).find():
-        print(data)
+
+    #for data in (obj.db.test).find():
+        #print(dumps(data))
+        #ObjectId.prototype.tojson = function() { return '"' + this.valueOf() + '"'; };
+    
+    print(dumps((obj.db.test).find()))
+
+    #(obj.db.test).collection.find()
+
+    return jsonify()
+
+    """
     json_data = (obj.db.test).products.find()
     print(json_data)
-
-    return jsonify({
-        "result": "データの登録が完了しました。",
-        "json_data": json_data
-    })
+    """
 
     #データベースからすべてのデータを持ってくる
 
-
-
 if __name__ == "__main__":
     app.run(port=PORT)
+    #app.run(debug=True)

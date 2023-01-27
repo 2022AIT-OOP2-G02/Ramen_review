@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<!-- <html lang="ja"> -->
+<html lang="ja">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="">
     <title>レビュー画面</title>
     <link rel="stylesheet" href="../static/review_add.css" type="text/css">
     <!-- new.css -->
     <link rel="stylesheet" href="https://fonts.xz.style/serve/inter.css">
-     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css"> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css"> -->
 
     <!-- メッセージ表示用のCSSを定義 -->
     <style>
@@ -25,7 +27,7 @@
         }
     </style>
 <script defer src="{{ url_for('static', filename='review_menyu-.js') }}"></script>
-<script defer src="{{ url_for('static', filename='ramen_review_add.js') }}"></script>
+<script defer src="{{ url_for('static', filename='ramen_review.js') }}"></script>
 </head>
 <body>
     <section>
@@ -61,7 +63,7 @@
                     </div>
                 </section>
                 <section>
-                    <table id="review-list">
+                    <div id="review"><!--ここにデータが表示される-->
                         <thead>
                             <tr>
                                 <th scope="col">名前</th>
@@ -70,7 +72,7 @@
                             </tr>
                         </thead>
                         <tbody></tbody>
-                    </table>
+                    </div>
                 </section>
                 <li><a href="/review/review_add">レビュー追加</a></li>
                 <section>
