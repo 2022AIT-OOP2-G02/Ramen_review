@@ -4,18 +4,9 @@
     height: 90vh;
     gap: 2em;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 5em 1fr;
+    grid-template-rows: 1fr;
     grid-template-areas:
-        "search map"
         "ranking map";
-}
-
-#search-wrapper {
-    grid-area: search;
-    box-sizing: border-box;
-    height: 100%;
-    width: 100%;
-    border: 3px solid black;
 }
 
 #ranking {
@@ -24,11 +15,47 @@
     box-sizing: border-box;
     height: 100%;
     width: 100%;
-    border: 3px solid black;
+    border-radius: 1em;
+    background-color: #F0EFE1;
+    padding: 0.5em;
 }
 
 #main:not([data-show='ranking']) #ranking {
     display: none;
+}
+
+#search-wrapper {
+    box-sizing: border-box;
+    border: 1px solid #999;
+    display: flex;
+    align-items: center;
+    border-radius: 1.5em;
+    height: 3em;
+    width: 100%;
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
+#search-wrapper input[type="text"] {
+    border: none;
+    height: 2.0em;
+    width: 100%;
+    padding-left: 1em;
+}
+
+#search-wrapper input[type="text"]:focus {
+    outline: 0;
+}
+
+#search-wrapper input[type="submit"] {
+    cursor: pointer;
+    border: none;
+    background: #5cb0e1;
+    color: #fff;
+    width: 5em;
+    height: 3.0em;
+    outline: none;
+    font-size: 1em;
 }
 
 #shop-info {
