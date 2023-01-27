@@ -38,6 +38,7 @@ const displayRamenShop = async (map, markers) => {
     circle.addTo(map);
     markers.add(circle);
 
+    console.log(ramenShopsData);
     for (const shop of ramenShopsData.results.shop) {
         const marker = L.marker([shop.lat, shop.lng]);
         marker.bindPopup(shop.name);
@@ -56,13 +57,17 @@ const getProperRange = (zoom) => {
 };
 
 const displayRamenShopDetail = (shopInfo, e) => {
-    console.log(shopInfo);
-    console.log(e);
     setShopInfo(shopInfo);
 };
 
 const setShopInfo = async (shopInfo) => {
-    const reviewData = await fetchWithParams('/review', { id: shopInfo.id }) ?? [];
+    const mainDom = document.querySelector("#main");
+    if (shopInfo === undefined) {
+        mainDom.dataset.show = 'ranking'
+        return;
+    }
+
+    const reviewData = await fetchWithParams('/review_get', { id: shopInfo.id }) ?? [];
     const reviewDataHtml = reviewData.map(v =>
         `<div class="review-item">
             <div class="write-name">${v.write_name ?? "No Name"}</div>
@@ -71,11 +76,6 @@ const setShopInfo = async (shopInfo) => {
         </div>`
     ).join("");
 
-    const mainDom = document.querySelector("#main");
-    if (shopInfo === undefined) {
-        mainDom.dataset.show = 'ranking'
-        return;
-    }
     mainDom.dataset.show = 'shop-info'
 
     mainDom.querySelector("#shop-logo-image").src = shopInfo.logo_image;
