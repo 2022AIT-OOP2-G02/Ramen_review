@@ -68,20 +68,23 @@ const setShopInfo = async (shopInfo) => {
     }
 
     const reviewData = await fetchWithParams('/review_get', { id: shopInfo.id }) ?? [];
-    const reviewDataHtml = reviewData.map(v =>
-        `<div class="review-item">
-            <div class="write-name">${v.write_name ?? "No Name"}</div>
-            <div class="review-point">${v.review_point ?? 0}</div>
-            <div class="review">${v.review ?? "レビューはありません"}</div>
-        </div>`
-    ).join("");
+     [];
+
+    const reviewItemTem = document.getElementById('review-item-tem');
+    const reviewDoms = reviewData.map(v => {
+        const reviewDataDom = reviewItemTem.content.cloneNode(true);
+        reviewDataDom.querySelector('.write-name').innerText = v.write_name ?? "No Name";
+        reviewDataDom.querySelector('.review-point').innerText = v.review_point ?? 0;
+        reviewDataDom.querySelector('.review').innerText = v.review ?? "レビューはありません";
+        return reviewDataDom;
+    });
 
     mainDom.dataset.show = 'shop-info'
 
     mainDom.querySelector("#shop-logo-image").src = shopInfo.logo_image;
     mainDom.querySelector("#shop-name-kana").innerText = shopInfo.name_kana;
     mainDom.querySelector("#shop-name").innerText = shopInfo.name;
-    mainDom.querySelector("#shop-review").innerHTML = reviewDataHtml;
+    mainDom.querySelector("#shop-review").replaceChildren(...reviewDoms);
 };
 
 const fetchWithParams = async (urlStr, params) => {
