@@ -9,8 +9,9 @@ const main = async () => {
 
     const markers = new Set();
     map.on('moveend', displayRamenShop.bind(null, map, markers));
-    map.on('popupclose', displayRanking.bind(null));
+    map.on('popupclose', movePrev);
 
+    document.getElementById('prev').onclick = movePrev;
     document.getElementById('search-wrapper').onsubmit = searchShop;
 };
 
@@ -68,6 +69,10 @@ const displayRamenShopDetail = (shopInfo, e) => {
 const displayRanking = () => {
     displayShopList([], 'ランキング');
     return;
+};
+
+const movePrev = () => {
+    document.getElementById('ranking').dataset.show = 'list';
 };
 
 const displayShopInfo = async (shop) => {

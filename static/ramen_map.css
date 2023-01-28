@@ -21,9 +21,19 @@
     padding: 0.5em;
 }
 
-#status {
+#status-bar {
     display: flex;
     align-items: center;
+}
+
+#ranking[data-show="list"] #prev {
+    display: none;
+}
+
+#prev {
+    font-size: 2em;
+    margin-right: 0.25em;
+    cursor: pointer;
 }
 
 #shop-list, #shop-page {
