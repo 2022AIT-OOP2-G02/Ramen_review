@@ -13,13 +13,15 @@ const main = async () => {
     map.on('popupclose', movePrev);
 
     document.getElementById('prev').onclick = movePrev;
+    document.getElementById('clear-search').onclick = clearSearch;
     document.getElementById('search-wrapper').onsubmit = searchShop;
 
     Object.assign(global, { map, markers, mapmode: 'near' });
 };
 
 const displayRamenShop = async () => {
-    const { map, markers } = global;
+    const { map, markers, mapmode } = global;
+    if (mapmode !== 'near') return;
     const center = map.getCenter();
     const range = getProperRange(map.getZoom());
     const res = await fetchWithParams("/api/ramen-shop", {
@@ -32,12 +34,7 @@ const displayRamenShop = async () => {
     });
     console.log(res);
     const shopList = res.results.shop;
-
-    for (const [key, marker] of markers) {
-        if (shopList.some(v => v.id === key)) continue;
-        map.removeLayer(marker);
-        markers.delete(key);
-    }
+    setShopMarkers(shopList);
 
     const circle = L.circle(center, {
         radius: range.meter,
@@ -48,6 +45,18 @@ const displayRamenShop = async () => {
     circle.addTo(map);
     markers.set('marker', circle);
 
+    displayShopList(shopList, '周辺の店');
+};
+
+const setShopMarkers = (shopList) => {
+    const { markers, map } = global;
+
+    for (const [key, marker] of markers) {
+        if (shopList.some(v => v.id === key)) continue;
+        map.removeLayer(marker);
+        markers.delete(key);
+    }
+
     for (const shop of shopList) {
         if (markers.has(shop.id)) continue;
         const marker = L.marker([shop.lat, shop.lng]);
@@ -56,8 +65,6 @@ const displayRamenShop = async () => {
         marker.on('click', displayRamenShopDetail.bind(null, shop));
         markers.set(shop.id, marker);
     }
-
-    displayShopList(shopList, '周辺の店');
 };
 
 const getProperRange = (zoom) => {
@@ -113,9 +120,17 @@ const searchShop = async (e) => {
         keyword: e.target.text.value,
         count: 100
     });
+    const shopList = ramenShopsData.results.shop;
 
     document.getElementById('ranking').dataset.show = 'list';
-    displayShopList(ramenShopsData.results.shop, `${e.target.text.value}の検索結果`);
+    global.mapmode = 'search';
+    setShopMarkers(shopList);
+    displayShopList(shopList, `${e.target.text.value}の検索結果`);
+};
+
+const clearSearch = () => {
+    document.getElementById('search-text').value = '';
+    global.mapmode = 'near';
 };
 
 const displayShopList = (shopList, status) => {
@@ -131,9 +146,12 @@ const createShopInfoDom = (shop) => {
     shopDom.querySelector('.shop-name-kana').textContent = shop.name_kana;
     shopDom.querySelector('.shop-name').textContent = shop.name;
     shopDom.querySelector('.shop-info').onclick = () => {
-        const { markers } = global;
-        markers.get(shop.id)?.openPopup();
+        const { map, markers } = global;
+        const marker = markers.get(shop.id);
         displayRamenShopDetail(shop);
+        if (marker === undefined) return;
+        marker.openPopup();
+        map.setView(marker.getLatLng());
     };
     return shopDom;
 };

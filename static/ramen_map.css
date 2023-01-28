@@ -117,6 +117,16 @@
     outline: 0;
 }
 
+#clear-search {
+    margin: 0.5em;
+    cursor: pointer;
+    color: #757575;
+}
+
+#clear-search:hover {
+    color: #000000;
+}
+
 #search-wrapper input[type="submit"] {
     cursor: pointer;
     border: none;
