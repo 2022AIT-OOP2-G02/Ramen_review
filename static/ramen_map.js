@@ -48,6 +48,8 @@ const displayRamenShop = async (map, markers) => {
         marker.on('click', displayRamenShopDetail.bind(null, shop));
         markers.add(marker);
     }
+
+    displayShopList(ramenShopsData.results.shop, '周辺の店');
 };
 
 const getProperRange = (zoom) => {
@@ -95,18 +97,19 @@ const searchShop = async (e) => {
         keyword: e.target.text.value,
         count: 100
     });
-    console.log(ramenShopsData);
 
-    document.getElementById('status').textContent = e.target.text.value + 'の検索結果';
-    const shopDoms = ramenShopsData.results.shop.map(createShopInfoDom);
+    displayShopList(ramenShopsData.results.shop, `${e.target.text.value}の検索結果`);
+};
+
+const displayShopList = (shopList, status) => {
+    document.getElementById('status').textContent = status;
+
+    const shopDoms = shopList.map(createShopInfoDom);
     document.getElementById('shop-list').replaceChildren(...shopDoms);
-
-    console.log(ramenShopsData);
 };
 
 const createShopInfoDom = (shop) => {
     const shopDom = document.getElementById('shop-item-tem').content.cloneNode(true);
-    console.log(shopDom);
     shopDom.querySelector('.shop-logo-image').src = shop.logo_image;
     shopDom.querySelector('.shop-name-kana').textContent = shop.name_kana;
     shopDom.querySelector('.shop-name').textContent = shop.name;
