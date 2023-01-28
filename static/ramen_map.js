@@ -10,6 +10,8 @@ const main = async () => {
     const markers = new Set();
     map.on('moveend', displayRamenShop.bind(null, map, markers));
     map.on('popupclose', setShopInfo.bind(null, undefined));
+
+    document.getElementById('search-wrapper').onsubmit = searchShop;
 };
 
 const displayRamenShop = async (map, markers) => {
@@ -85,6 +87,19 @@ const setShopInfo = async (shopInfo) => {
     mainDom.querySelector("#shop-name-kana").innerText = shopInfo.name_kana;
     mainDom.querySelector("#shop-name").innerText = shopInfo.name;
     mainDom.querySelector("#shop-review").replaceChildren(...reviewDoms);
+};
+
+const searchShop = async (e) => {
+    e.preventDefault();
+    const ramenShopsData = await fetchWithParams("/api/ramen-shop", {
+        large_area: "Z033",
+        genre: "G013",
+        format: "json",
+        keyword: e.target.text.value,
+        count: 100
+    });
+
+    console.log(ramenShopsData);
 };
 
 const fetchWithParams = async (urlStr, params) => {

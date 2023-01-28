@@ -21,10 +21,10 @@
     -->
     <div id="main" data-show="ranking">
         <div id="ranking">
-            <div id="search-wrapper">
-                <input type="text" size="25" placeholder="キーワード検索">
+            <form id="search-wrapper" onsubmit="seachShop(this);return false">
+                <input type="text" size="25" name="text" placeholder="キーワード検索">
                 <input type="submit" class="material-icons" value="search">
-            </div>
+            </form>
             ランキング
         </div>
         <div id="shop-info">
