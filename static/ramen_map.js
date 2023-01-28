@@ -1,4 +1,5 @@
 const DEFAULT_LATLNG = [35.176370507601106, 137.10632646220583];
+const global = {};
 
 const main = async () => {
     const map = L.map('map').setView(DEFAULT_LATLNG, 13);
@@ -7,18 +8,21 @@ const main = async () => {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
-    const markers = new Set();
-    map.on('moveend', displayRamenShop.bind(null, map, markers));
+    const markers = new Map();
+    map.on('moveend', displayRamenShop);
     map.on('popupclose', movePrev);
 
     document.getElementById('prev').onclick = movePrev;
     document.getElementById('search-wrapper').onsubmit = searchShop;
+
+    Object.assign(global, { map, markers });
 };
 
-const displayRamenShop = async (map, markers) => {
+const displayRamenShop = async () => {
+    const { map, markers } = global;
     const center = map.getCenter();
     const range = getProperRange(map.getZoom());
-    const ramenShopsData = await fetchWithParams("/api/ramen-shop", {
+    const res = await fetchWithParams("/api/ramen-shop", {
         lat: center.lat,
         lng: center.lng,
         range: range.level,
@@ -26,10 +30,13 @@ const displayRamenShop = async (map, markers) => {
         format: "json",
         count: 100
     });
+    console.log(res);
+    const shopList = res.results.shop;
 
-    for (const marker of markers) {
+    for (const [key, marker] of markers) {
+        if (shopList.some(v => v.id === key)) continue;
         map.removeLayer(marker);
-        markers.delete(marker);
+        markers.delete(key);
     }
 
     const circle = L.circle(center, {
@@ -39,18 +46,18 @@ const displayRamenShop = async (map, markers) => {
         fillOpacity: 0.5
     });
     circle.addTo(map);
-    markers.add(circle);
+    markers.set('marker', circle);
 
-    console.log(ramenShopsData);
-    for (const shop of ramenShopsData.results.shop) {
+    for (const shop of shopList) {
+        if (markers.has(shop.id)) continue;
         const marker = L.marker([shop.lat, shop.lng]);
         marker.bindPopup(shop.name);
         marker.addTo(map);
         marker.on('click', displayRamenShopDetail.bind(null, shop));
-        markers.add(marker);
+        markers.set(shop.id, marker);
     }
 
-    displayShopList(ramenShopsData.results.shop, '周辺の店');
+    displayShopList(shopList, '周辺の店');
 };
 
 const getProperRange = (zoom) => {
@@ -71,8 +78,10 @@ const displayRanking = () => {
     return;
 };
 
-const movePrev = () => {
+const movePrev = (e) => {
+    const { map } = global;
     document.getElementById('ranking').dataset.show = 'list';
+    if (e.type !== 'popupclose') map.closePopup();
 };
 
 const displayShopInfo = async (shop) => {
@@ -106,11 +115,11 @@ const searchShop = async (e) => {
         count: 100
     });
 
+    document.getElementById('ranking').dataset.show = 'list';
     displayShopList(ramenShopsData.results.shop, `${e.target.text.value}の検索結果`);
 };
 
 const displayShopList = (shopList, status) => {
-    document.getElementById('ranking').dataset.show = 'list';
     document.getElementById('status').textContent = status;
 
     const shopDoms = shopList.map(createShopInfoDom);
