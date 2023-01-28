@@ -26,8 +26,16 @@
     align-items: center;
 }
 
-#shop-list {
+#shop-list, #shop-page {
     overflow: hidden auto;
+}
+
+#ranking:not([data-show="list"]) #shop-list {
+    display: none;
+}
+
+#ranking:not([data-show="page"]) #shop-page {
+    display: none;
 }
 
 .shop-info {

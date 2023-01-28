@@ -9,7 +9,7 @@ const main = async () => {
 
     const markers = new Set();
     map.on('moveend', displayRamenShop.bind(null, map, markers));
-    map.on('popupclose', displayShopInfo.bind(null, undefined));
+    map.on('popupclose', displayRanking.bind(null));
 
     document.getElementById('search-wrapper').onsubmit = searchShop;
 };
@@ -64,11 +64,14 @@ const displayRamenShopDetail = (shopInfo, e) => {
     displayShopInfo(shopInfo);
 };
 
+// ハリボテ
+const displayRanking = () => {
+    displayShopList([], 'ランキング');
+    return;
+};
+
 const displayShopInfo = async (shop) => {
-    if (shop === undefined) {
-        document.getElementById('status').textContent = 'ランキング';
-        return;
-    }
+    document.getElementById('ranking').dataset.show = 'page';
     document.getElementById('status').textContent = 'レビュー';
 
     const reviewData = await fetchWithParams('/review_get', { id: shop.id }) ?? [];
@@ -85,7 +88,7 @@ const displayShopInfo = async (shop) => {
     const shopDom = createShopInfoDom(shop);
     shopDom.querySelector(".shop-review").replaceChildren(...reviewDoms);
 
-    document.querySelector("#shop-list").replaceChildren(shopDom);
+    document.querySelector("#shop-page").replaceChildren(shopDom);
 };
 
 const searchShop = async (e) => {
@@ -102,6 +105,7 @@ const searchShop = async (e) => {
 };
 
 const displayShopList = (shopList, status) => {
+    document.getElementById('ranking').dataset.show = 'list';
     document.getElementById('status').textContent = status;
 
     const shopDoms = shopList.map(createShopInfoDom);
@@ -114,7 +118,7 @@ const createShopInfoDom = (shop) => {
     shopDom.querySelector('.shop-name-kana').textContent = shop.name_kana;
     shopDom.querySelector('.shop-name').textContent = shop.name;
     return shopDom;
-}
+};
 
 const fetchWithParams = async (urlStr, params) => {
     const url = urlStr.startsWith("/") ? new URL(urlStr, window.location) : new URL(urlStr);
@@ -125,6 +129,6 @@ const fetchWithParams = async (urlStr, params) => {
         return;
     };
     return await response.json();
-}
+};
 
 window.onload = main;
