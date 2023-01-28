@@ -9,17 +9,19 @@ const main = async () => {
     }).addTo(map);
 
     const markers = new Map();
-    map.on('moveend', displayRamenShop);
+    Object.assign(global, { map, markers, mapmode: 'near' });
+
+    map.on('moveend', displayNearShop);
     map.on('popupclose', movePrev);
 
     document.getElementById('prev').onclick = movePrev;
     document.getElementById('clear-search').onclick = clearSearch;
     document.getElementById('search-wrapper').onsubmit = searchShop;
 
-    Object.assign(global, { map, markers, mapmode: 'near' });
+    displayNearShop();
 };
 
-const displayRamenShop = async () => {
+const displayNearShop = async () => {
     const { map, markers, mapmode } = global;
     if (mapmode !== 'near') return;
     const center = map.getCenter();
@@ -79,12 +81,6 @@ const displayRamenShopDetail = (shopInfo, e) => {
     displayShopInfo(shopInfo);
 };
 
-// ハリボテ
-const displayRanking = () => {
-    displayShopList([], 'ランキング');
-    return;
-};
-
 const movePrev = (e) => {
     const { map } = global;
     document.getElementById('ranking').dataset.show = 'list';
@@ -131,6 +127,7 @@ const searchShop = async (e) => {
 const clearSearch = () => {
     document.getElementById('search-text').value = '';
     global.mapmode = 'near';
+    displayNearShop();
 };
 
 const displayShopList = (shopList, status) => {
