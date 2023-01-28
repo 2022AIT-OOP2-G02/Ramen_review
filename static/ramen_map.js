@@ -9,7 +9,7 @@ const main = async () => {
 
     const markers = new Set();
     map.on('moveend', displayRamenShop.bind(null, map, markers));
-    map.on('popupclose', setShopInfo.bind(null, undefined));
+    map.on('popupclose', displayShopInfo.bind(null, undefined));
 
     document.getElementById('search-wrapper').onsubmit = searchShop;
 };
@@ -59,18 +59,17 @@ const getProperRange = (zoom) => {
 };
 
 const displayRamenShopDetail = (shopInfo, e) => {
-    setShopInfo(shopInfo);
+    displayShopInfo(shopInfo);
 };
 
-const setShopInfo = async (shopInfo) => {
-    const mainDom = document.querySelector("#main");
-    if (shopInfo === undefined) {
-        mainDom.dataset.show = 'ranking'
+const displayShopInfo = async (shop) => {
+    if (shop === undefined) {
         document.getElementById('status').textContent = 'ランキング';
         return;
     }
+    document.getElementById('status').textContent = 'レビュー';
 
-    const reviewData = await fetchWithParams('/review_get', { id: shopInfo.id }) ?? [];
+    const reviewData = await fetchWithParams('/review_get', { id: shop.id }) ?? [];
 
     const reviewItemTem = document.getElementById('review-item-tem');
     const reviewDoms = reviewData.map(v => {
@@ -81,12 +80,10 @@ const setShopInfo = async (shopInfo) => {
         return reviewDataDom;
     });
 
-    mainDom.dataset.show = 'shop-info';
+    const shopDom = createShopInfoDom(shop);
+    shopDom.querySelector(".shop-review").replaceChildren(...reviewDoms);
 
-    mainDom.querySelector("#shop-logo-image").src = shopInfo.logo_image;
-    mainDom.querySelector("#shop-name-kana").innerText = shopInfo.name_kana;
-    mainDom.querySelector("#shop-name").innerText = shopInfo.name;
-    mainDom.querySelector("#shop-review").replaceChildren(...reviewDoms);
+    document.querySelector("#shop-list").replaceChildren(shopDom);
 };
 
 const searchShop = async (e) => {
