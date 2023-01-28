@@ -26,16 +26,12 @@ const displayNearShop = async () => {
     if (mapmode !== 'near') return;
     const center = map.getCenter();
     const range = getProperRange(map.getZoom());
-    const res = await fetchWithParams("/api/ramen-shop", {
+    const shopList = await fetchShopData({
         lat: center.lat,
         lng: center.lng,
-        range: range.level,
-        genre: "G013",
-        format: "json",
-        count: 100
+        range: range.level
     });
-    console.log(res);
-    const shopList = res.results.shop;
+    console.log(shopList);
     setShopMarkers(shopList);
 
     const circle = L.circle(center, {
@@ -77,23 +73,17 @@ const getProperRange = (zoom) => {
     return { level: 5, meter: 3000 };
 };
 
-const displayRamenShopDetail = (shopInfo, e) => {
-    displayShopInfo(shopInfo);
-};
-
 const movePrev = (e) => {
     const { map } = global;
     document.getElementById('ranking').dataset.show = 'list';
     if (e.type !== 'popupclose') map.closePopup();
 };
 
-const displayShopInfo = async (shop) => {
+const displayRamenShopDetail = (shop, e) => {
     document.getElementById('ranking').dataset.show = 'page';
 
-    const reviewData = await fetchWithParams('/review_get', { id: shop.id }) ?? [];
-
     const reviewItemTem = document.getElementById('review-item-tem');
-    const reviewDoms = reviewData.map(v => {
+    const reviewDoms = shop.review.map(v => {
         const reviewDataDom = reviewItemTem.content.cloneNode(true);
         reviewDataDom.querySelector('.write-name').innerText = v.write_name ?? "No Name";
         reviewDataDom.querySelector('.review-point').innerText = v.review_point ?? 0;
@@ -109,14 +99,10 @@ const displayShopInfo = async (shop) => {
 
 const searchShop = async (e) => {
     e.preventDefault();
-    const ramenShopsData = await fetchWithParams("/api/ramen-shop", {
+    const shopList = await fetchShopData({
         large_area: "Z033",
-        genre: "G013",
-        format: "json",
-        keyword: e.target.text.value,
-        count: 100
+        keyword: e.target.text.value
     });
-    const shopList = ramenShopsData.results.shop;
 
     document.getElementById('ranking').dataset.show = 'list';
     global.mapmode = 'search';
@@ -132,6 +118,7 @@ const clearSearch = () => {
 
 const displayShopList = (shopList, status) => {
     document.getElementById('status').textContent = status;
+    shopList.sort((a, b) => a.point_average - b.point_average);
 
     const shopDoms = shopList.map(createShopInfoDom);
     document.getElementById('shop-list').replaceChildren(...shopDoms);
@@ -139,9 +126,10 @@ const displayShopList = (shopList, status) => {
 
 const createShopInfoDom = (shop) => {
     const shopDom = document.getElementById('shop-item-tem').content.cloneNode(true);
-    shopDom.querySelector('.shop-logo-image').src = shop.logo_image;
-    shopDom.querySelector('.shop-name-kana').textContent = shop.name_kana;
+    shopDom.querySelector('.shop-logo-image').src = getPhotoUrl(shop);
+    shopDom.querySelector('.shop-name-kana').textContent = shop.catch || shop.genre.catch;
     shopDom.querySelector('.shop-name').textContent = shop.name;
+    shopDom.querySelector('.shop-point').textContent = shop.point_average;
     shopDom.querySelector('.shop-info').onclick = () => {
         const { map, markers } = global;
         const marker = markers.get(shop.id);
@@ -152,6 +140,32 @@ const createShopInfoDom = (shop) => {
     };
     return shopDom;
 };
+
+const getPhotoUrl = (shop) =>
+    shop.photo.pc.l ?? shop.photo.pc.m ?? shop.photo.pc.s
+    ?? shop.mobile.pc.l ?? shop.mobile.pc.m ?? shop.mobile.pc.s;
+
+const fetchShopData = async (params) => {
+    Object.assign(params, {
+        genre: "G013",
+        format: "json",
+        count: 100
+    });
+
+    const res = await fetchWithParams('/api/ramen-shop', params);
+    const shopList = res.results.shop;
+
+    for (const shop of shopList) {
+        const review = await fetchWithParams('/review_get', { id: shop.id });
+        shop.review = review;
+        shop.point_average = review.length
+            ? review.reduce((p, c) => p + c.review_point ?? 0, 0) / review.length | 0
+            : undefined;
+    }
+
+    return shopList;
+};
+
 
 const fetchWithParams = async (urlStr, params) => {
     const url = urlStr.startsWith("/") ? new URL(urlStr, window.location) : new URL(urlStr);
