@@ -15,7 +15,7 @@ const main = async () => {
     document.getElementById('prev').onclick = movePrev;
     document.getElementById('search-wrapper').onsubmit = searchShop;
 
-    Object.assign(global, { map, markers });
+    Object.assign(global, { map, markers, mapmode: 'near' });
 };
 
 const displayRamenShop = async () => {
@@ -86,7 +86,6 @@ const movePrev = (e) => {
 
 const displayShopInfo = async (shop) => {
     document.getElementById('ranking').dataset.show = 'page';
-    document.getElementById('status').textContent = 'レビュー';
 
     const reviewData = await fetchWithParams('/review_get', { id: shop.id }) ?? [];
 
@@ -131,6 +130,11 @@ const createShopInfoDom = (shop) => {
     shopDom.querySelector('.shop-logo-image').src = shop.logo_image;
     shopDom.querySelector('.shop-name-kana').textContent = shop.name_kana;
     shopDom.querySelector('.shop-name').textContent = shop.name;
+    shopDom.querySelector('.shop-info').onclick = () => {
+        const { markers } = global;
+        markers.get(shop.id)?.openPopup();
+        displayRamenShopDetail(shop);
+    };
     return shopDom;
 };
 
