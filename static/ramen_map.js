@@ -66,11 +66,11 @@ const setShopInfo = async (shopInfo) => {
     const mainDom = document.querySelector("#main");
     if (shopInfo === undefined) {
         mainDom.dataset.show = 'ranking'
+        document.getElementById('status').textContent = 'ランキング';
         return;
     }
 
     const reviewData = await fetchWithParams('/review_get', { id: shopInfo.id }) ?? [];
-     [];
 
     const reviewItemTem = document.getElementById('review-item-tem');
     const reviewDoms = reviewData.map(v => {
@@ -81,7 +81,7 @@ const setShopInfo = async (shopInfo) => {
         return reviewDataDom;
     });
 
-    mainDom.dataset.show = 'shop-info'
+    mainDom.dataset.show = 'shop-info';
 
     mainDom.querySelector("#shop-logo-image").src = shopInfo.logo_image;
     mainDom.querySelector("#shop-name-kana").innerText = shopInfo.name_kana;
@@ -98,9 +98,23 @@ const searchShop = async (e) => {
         keyword: e.target.text.value,
         count: 100
     });
+    console.log(ramenShopsData);
+
+    document.getElementById('status').textContent = e.target.text.value + 'の検索結果';
+    const shopDoms = ramenShopsData.results.shop.map(createShopInfoDom);
+    document.getElementById('shop-list').replaceChildren(...shopDoms);
 
     console.log(ramenShopsData);
 };
+
+const createShopInfoDom = (shop) => {
+    const shopDom = document.getElementById('shop-item-tem').content.cloneNode(true);
+    console.log(shopDom);
+    shopDom.querySelector('.shop-logo-image').src = shop.logo_image;
+    shopDom.querySelector('.shop-name-kana').textContent = shop.name_kana;
+    shopDom.querySelector('.shop-name').textContent = shop.name;
+    return shopDom;
+}
 
 const fetchWithParams = async (urlStr, params) => {
     const url = urlStr.startsWith("/") ? new URL(urlStr, window.location) : new URL(urlStr);

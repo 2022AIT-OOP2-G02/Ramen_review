@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="static/ramen_map.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="">
     <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
     <script src="static/ramen_map.js" defer></script>
-    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
     <title>Ramen_map</title>
 </head>
+
 <body>
     <!--
 
@@ -21,11 +25,12 @@
     -->
     <div id="main" data-show="ranking">
         <div id="ranking">
-            <form id="search-wrapper" onsubmit="seachShop(this);return false">
+            <form id="search-wrapper">
                 <input type="text" size="25" name="text" placeholder="キーワード検索">
                 <input type="submit" class="material-icons" value="search">
             </form>
-            ランキング
+            <div id="status">ランキング</div>
+            <div id="shop-list"></div>
         </div>
         <div id="shop-info">
             <div id="shop-logo-image-wrapper">
@@ -38,6 +43,16 @@
         <div id="map" />
     </div>
 
+    <template id="shop-item-tem">
+        <div class="shop-info">
+            <div class="shop-logo-image-wrapper">
+                <img src="" alt="ロゴ" class="shop-logo-image">
+            </div>
+            <div class="shop-name-kana"></div>
+            <div class="shop-name"></div>
+            <div class="shop-review"></div>
+        </div>
+    </template>
     <template id="review-item-tem">
         <div class="review-item">
             <div class="write-name"></div>
@@ -46,4 +61,5 @@
         </div>
     </template>
 </body>
+
 </html>
