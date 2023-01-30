@@ -1,33 +1,63 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="static/ramen_map.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
     <script src="static/ramen_map.js" defer></script>
-    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
     <title>Ramen_map</title>
 </head>
+
 <body>
     <!--
-    
+
     <h1>ラーメンレビュー評価サイト</h1>
     <li><a href="/review">レビュー</a></li>
     <div id="map" />
-    
+
     -->
-    <div id="main" data-show="ranking">
-        <div id="search-wrapper">検索</div>
-        <div id="ranking">ランキング</div>
-        <div id="shop-info">
-            <img src="" alt="ロゴ" id="shop-logo-image">
-            <div id="shop-name-kana"></div>
-            <div id="shop-name"></div>
-            <div id="shop-review"></div>
+    <div id="main">
+        <div id="ranking" data-show="list">
+            <form id="search-wrapper">
+                <input type="text" id="search-text" name="text" placeholder="キーワード検索">
+                <div id="clear-search" class="material-icons">clear</div>
+                <input type="submit" class="material-icons" value="search">
+            </form>
+            <div id="status-bar">
+                <div id="prev" class="material-icons">arrow_back</div>
+                <div id="status"></div>
+            </div>
+            <div id="shop-list"></div>
+            <div id="shop-page"></div>
         </div>
         <div id="map" />
     </div>
+
+    <template id="shop-item-tem">
+        <div class="shop-info">
+            <div class="shop-logo-image-wrapper">
+                <img src="" alt="ロゴ" class="shop-logo-image">
+            </div>
+            <div class="shop-name-kana"></div>
+            <div class="shop-name"></div>
+            <div class="shop-review"></div>
+            <div class="shop-point"></div>
+        </div>
+    </template>
+    <template id="review-item-tem">
+        <div class="review-item">
+            <div class="write-name"></div>
+            <div class="review-point"></div>
+            <div class="review"></div>
+        </div>
+    </template>
 </body>
+
 </html>

@@ -1,4 +1,5 @@
 const DEFAULT_LATLNG = [35.176370507601106, 137.10632646220583];
+const global = {};
 
 const main = async () => {
     const map = L.map('map').setView(DEFAULT_LATLNG, 13);
@@ -7,27 +8,31 @@ const main = async () => {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
-    const markers = new Set();
-    map.on('moveend', displayRamenShop.bind(null, map, markers));
-    map.on('popupclose', setShopInfo.bind(null, undefined));
+    const markers = new Map();
+    Object.assign(global, { map, markers, mapmode: 'near' });
+
+    map.on('moveend', displayNearShop);
+    map.on('popupclose', movePrev);
+
+    document.getElementById('prev').onclick = movePrev;
+    document.getElementById('clear-search').onclick = clearSearch;
+    document.getElementById('search-wrapper').onsubmit = searchShop;
+
+    displayNearShop();
 };
 
-const displayRamenShop = async (map, markers) => {
+const displayNearShop = async () => {
+    const { map, markers, mapmode } = global;
+    if (mapmode !== 'near') return;
     const center = map.getCenter();
     const range = getProperRange(map.getZoom());
-    const ramenShopsData = await fetchWithParams("/api/ramen-shop", {
+    const shopList = await fetchShopData({
         lat: center.lat,
         lng: center.lng,
-        range: range.level,
-        genre: "G013",
-        format: "json",
-        count: 100
+        range: range.level
     });
-
-    for (const marker of markers) {
-        map.removeLayer(marker);
-        markers.delete(marker);
-    }
+    console.log(shopList);
+    setShopMarkers(shopList);
 
     const circle = L.circle(center, {
         radius: range.meter,
@@ -36,14 +41,27 @@ const displayRamenShop = async (map, markers) => {
         fillOpacity: 0.5
     });
     circle.addTo(map);
-    markers.add(circle);
+    markers.set('marker', circle);
 
-    for (const shop of ramenShopsData.results.shop) {
+    displayShopList(shopList, '周辺の店');
+};
+
+const setShopMarkers = (shopList) => {
+    const { markers, map } = global;
+
+    for (const [key, marker] of markers) {
+        if (shopList.some(v => v.id === key)) continue;
+        map.removeLayer(marker);
+        markers.delete(key);
+    }
+
+    for (const shop of shopList) {
+        if (markers.has(shop.id)) continue;
         const marker = L.marker([shop.lat, shop.lng]);
         marker.bindPopup(shop.name);
         marker.addTo(map);
         marker.on('click', displayRamenShopDetail.bind(null, shop));
-        markers.add(marker);
+        markers.set(shop.id, marker);
     }
 };
 
@@ -55,34 +73,99 @@ const getProperRange = (zoom) => {
     return { level: 5, meter: 3000 };
 };
 
-const displayRamenShopDetail = (shopInfo, e) => {
-    console.log(shopInfo);
-    console.log(e);
-    setShopInfo(shopInfo);
+const movePrev = (e) => {
+    const { map } = global;
+    document.getElementById('ranking').dataset.show = 'list';
+    if (e.type !== 'popupclose') map.closePopup();
 };
 
-const setShopInfo = async (shopInfo) => {
-    const reviewData = await fetchWithParams('/review', { id: shopInfo.id }) ?? [];
-    const reviewDataHtml = reviewData.map(v =>
-        `<div class="review-item">
-            <div class="write-name">${v.write_name ?? "No Name"}</div>
-            <div class="review-point">${v.review_point ?? 0}</div>
-            <div class="review">${v.review ?? "レビューはありません"}</div>
-        </div>`
-    ).join("");
+const displayRamenShopDetail = (shop, e) => {
+    document.getElementById('ranking').dataset.show = 'page';
 
-    const mainDom = document.querySelector("#main");
-    if (shopInfo === undefined) {
-        mainDom.dataset.show = 'ranking'
-        return;
+    const reviewItemTem = document.getElementById('review-item-tem');
+    const reviewDoms = shop.review.map(v => {
+        const reviewDataDom = reviewItemTem.content.cloneNode(true);
+        reviewDataDom.querySelector('.write-name').innerText = v.write_name ?? "No Name";
+        reviewDataDom.querySelector('.review-point').innerText = v.review_point ?? 0;
+        reviewDataDom.querySelector('.review').innerText = v.review ?? "レビューはありません";
+        return reviewDataDom;
+    });
+
+    const shopDom = createShopInfoDom(shop);
+    shopDom.querySelector(".shop-review").replaceChildren(...reviewDoms);
+
+    document.querySelector("#shop-page").replaceChildren(shopDom);
+};
+
+const searchShop = async (e) => {
+    e.preventDefault();
+    const shopList = await fetchShopData({
+        large_area: "Z033",
+        keyword: e.target.text.value
+    });
+
+    document.getElementById('ranking').dataset.show = 'list';
+    global.mapmode = 'search';
+    setShopMarkers(shopList);
+    displayShopList(shopList, `${e.target.text.value}の検索結果`);
+};
+
+const clearSearch = () => {
+    document.getElementById('search-text').value = '';
+    global.mapmode = 'near';
+    displayNearShop();
+};
+
+const displayShopList = (shopList, status) => {
+    document.getElementById('status').textContent = status;
+    shopList.sort((a, b) => a.point_average - b.point_average);
+
+    const shopDoms = shopList.map(createShopInfoDom);
+    document.getElementById('shop-list').replaceChildren(...shopDoms);
+};
+
+const createShopInfoDom = (shop) => {
+    const shopDom = document.getElementById('shop-item-tem').content.cloneNode(true);
+    shopDom.querySelector('.shop-logo-image').src = getPhotoUrl(shop);
+    shopDom.querySelector('.shop-name-kana').textContent = shop.catch || shop.genre.catch;
+    shopDom.querySelector('.shop-name').textContent = shop.name;
+    shopDom.querySelector('.shop-point').textContent = shop.point_average;
+    shopDom.querySelector('.shop-info').onclick = () => {
+        const { map, markers } = global;
+        const marker = markers.get(shop.id);
+        displayRamenShopDetail(shop);
+        if (marker === undefined) return;
+        marker.openPopup();
+        map.setView(marker.getLatLng());
+    };
+    return shopDom;
+};
+
+const getPhotoUrl = (shop) =>
+    shop.photo.pc.l ?? shop.photo.pc.m ?? shop.photo.pc.s
+    ?? shop.mobile.pc.l ?? shop.mobile.pc.m ?? shop.mobile.pc.s;
+
+const fetchShopData = async (params) => {
+    Object.assign(params, {
+        genre: "G013",
+        format: "json",
+        count: 100
+    });
+
+    const res = await fetchWithParams('/api/ramen-shop', params);
+    const shopList = res.results.shop;
+
+    for (const shop of shopList) {
+        const review = await fetchWithParams('/review_get', { id: shop.id });
+        shop.review = review;
+        shop.point_average = review.length
+            ? review.reduce((p, c) => p + c.review_point ?? 0, 0) / review.length | 0
+            : undefined;
     }
-    mainDom.dataset.show = 'shop-info'
 
-    mainDom.querySelector("#shop-logo-image").src = shopInfo.logo_image;
-    mainDom.querySelector("#shop-name-kana").innerText = shopInfo.name_kana;
-    mainDom.querySelector("#shop-name").innerText = shopInfo.name;
-    mainDom.querySelector("#shop-review").innerHTML = reviewDataHtml;
+    return shopList;
 };
+
 
 const fetchWithParams = async (urlStr, params) => {
     const url = urlStr.startsWith("/") ? new URL(urlStr, window.location) : new URL(urlStr);
@@ -93,6 +176,6 @@ const fetchWithParams = async (urlStr, params) => {
         return;
     };
     return await response.json();
-}
+};
 
 window.onload = main;
