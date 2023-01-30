@@ -63,12 +63,12 @@ def reviews():
     return jsonify(data)
 
 # データ登録画面
-@app.route('/review/review_add')
+@app.route('/review_get/review_add')
 def review_add():
     return render_template("ramen_review_add2.html")
 
 # データ登録処理
-@app.route('/review/review_add_post', methods=["POST"])
+@app.route('/review_get/review_add_post', methods=["POST"])
 def review_post():
     # 検索パラメータの取得
     p_write_name = request.form.get('rn',None)
