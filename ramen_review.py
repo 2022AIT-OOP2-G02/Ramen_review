@@ -42,13 +42,13 @@ def index():
     return render_template("ramen_map.html")
 
 # レビュー評価画面
-@app.route('/ramen-map/review_get')
+@app.route('/review_get', methods=["GET"])
 def review():
     #print(dumps((obj.db.test).find()))
     return render_template("ramen_review_add.html")
 
 # レビュー評価画面処理
-@app.route('/ramen-map/review_get')
+@app.route('/review_get', methods=["GET"])
 def reviews(): 
     data = obj.get_all()
     print("xxxx")
@@ -78,12 +78,12 @@ def reviews():
     return jsonify(data)
 
 # データ登録画面
-@app.route('/ramen-map/review_get/review_add')
+@app.route('/review_get/review_add')
 def review_add():
     return render_template("ramen_review_add2.html")
 
 # データ登録処理
-@app.route('/ramen-map/review_get/review_add_post', methods=["POST"])
+@app.route('/review_get/review_add_post', methods=["POST"])
 def review_post():
     # 検索パラメータの取得
     p_write_name = request.form.get('rn',None)
