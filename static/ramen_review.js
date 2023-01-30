@@ -1,5 +1,5 @@
 
-fetch("/review").then(response => {
+fetch("/review_get").then(response => {
     console.log("aaaa")
     console.log(response);
     response.json().then((data) => {
