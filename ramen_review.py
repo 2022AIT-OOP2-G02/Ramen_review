@@ -42,13 +42,13 @@ def index():
     return render_template("ramen_map.html")
 
 # レビュー評価画面
-@app.route('/review')
+@app.route('/review_get')
 def review():
     #print(dumps((obj.db.test).find()))
     return render_template("ramen_review_add.html")
 
 # レビュー評価画面処理
-@app.route('/review')
+@app.route('/review_get')
 def reviews(): 
     data = obj.get_all()
     print("xxxx")
