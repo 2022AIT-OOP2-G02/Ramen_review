@@ -37,17 +37,20 @@
                     <div class="title-block">
                         <h1>〇〇屋レビュー</h1>
                     </div>
+                    <!--ハンバーガーメニュー-->
                     <div class="hamburger" id="open_nav">
                         <img src="{{ url_for('static', filename='hamburger.png') }}" alt="gu">
                     </div>
                 </div>
             </header>
             <main>
+                <!--評価の平均-->>
                 <section>
                     <h3>現在の評価</h3>
                         <div id="review_average"></div>
                         <tbody></tbody>    
                 </section>
+                <!--検索-->
                 <section>
                     <div class="wrap">
                         <form role="search" method="get" action="search">
@@ -84,6 +87,7 @@
             </main>
         </div>
     </section>
+    <!--ハンバーガーメニューの中-->
     <nav id="nav">
         <h1>メニュー</h1>
         <ul>
@@ -98,7 +102,7 @@
     <footer></footer>
     <style>
         @media (prefers-color-scheme: dark) {
-          :root {
+        :root {
             --nc-tx-1: #000000;
             --nc-tx-2: #1A1A1A;
             --nc-bg-1: #FFFFFF;
@@ -109,7 +113,7 @@
             --nc-lk-tx: #FFFFFF;
             --nc-ac-1: #79FFE1;
             --nc-ac-tx: #0C4047;
-          }
+        }
         }
         </style>
     <h4>ニックネーム:</h4>
