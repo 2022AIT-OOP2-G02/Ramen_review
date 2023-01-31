@@ -12,6 +12,7 @@ class Mongo(object):
         self.clint = MongoClient()
         self.db = self.clint['test']
 
+
     def add_one(self,na,wn,rp,re):
         """データ挿入"""
         post = {
@@ -111,6 +112,7 @@ def review_post():
             "error": error_message
         })
     
+
     #動作確認用
     #受け取ったパラメータを「address.json」のファイルに追記する
     try:
@@ -150,6 +152,8 @@ def review_post():
     
     #データベースに追加
     rest = obj.add_one(p_shop_name, p_write_name, p_review_points, p_review)
+    print(rest)
+
 
     #for data in (obj.db.test).find():
         #print(dumps(data))
