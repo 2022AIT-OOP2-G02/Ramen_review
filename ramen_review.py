@@ -11,13 +11,13 @@ class Mongo(object):
          self.clint = MongoClient()
          self.db = self.clint['test']
 
-    def add_one(self,wn,rp,re):
+    def add_one(self,wn,rp,re,sn):
         """データ挿入"""
         post = {
-            #'shop_name': p_write_name,
             'write_name': wn,
             'review_points': rp,
             'review':re,
+            'shop_name': sn,
             'created_at': datetime.now()
         }
         return self.db.test.insert_one(post)
@@ -104,7 +104,7 @@ def review_post():
             "error": error_message
         })
     
-    rest = obj.add_one(p_write_name,p_review_points,p_review)
+    rest = obj.add_one(p_write_name,p_review_points,p_review,p_shop_name)
     print(rest)
 
     #データベースからすべてのデータを持ってくる
