@@ -35,7 +35,7 @@
             <header>
                 <div class="container">
                     <div class="title-block">
-                        <h1>〇〇屋レビュー</h1>
+                        <h1>#shop_name#</h1>
                     </div>
                     <!--ハンバーガーメニュー-->
                     <div class="hamburger" id="open_nav">
@@ -51,6 +51,7 @@
                         <tbody></tbody>    
                 </section>
                 <!--検索-->
+            <!--
                 <section>
                     <div class="wrap">
                         <form role="search" method="get" action="search">
@@ -59,14 +60,14 @@
                                 <input type="text" id="search-write_name" placeholder="" name="rn">
                                 <h3>評価点</h3>
                                 <input type="text" id="search-review_points" placeholder="" name="rp">
-                                <!-- <input type="text" id="search-review" placeholder="内容" name="re"> -->
                                 <button id="search-submit">Search</button>
                             </div>
                         </form>
                     </div>
                 </section>
+            -->
                 <section>
-                    <div id="review"><!--ここにデータが表示される-->
+                    <div id="review_get"><!--ここにデータが表示される-->
                         <thead>
                             <tr>
                                 <th scope="col">名前</th>
@@ -77,7 +78,7 @@
                         <tbody></tbody>
                     </div>
                 </section>
-                <li><a href="/review/review_add">レビュー追加</a></li>
+                <li><a href="/review_get/review_add">レビュー追加</a></li>
                 <section>
                     <h3>近くにあるお店</h3>
                 </section>

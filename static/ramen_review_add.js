@@ -1,13 +1,21 @@
-// データの初期表示
-fetch("/review_get").then(response => {
+// shop_nameのid取得
+var param = location.search
+console.log(param)
+//console.log(params.get('write-name'));
+//url取得
+const url = new URL('http://127.0.0.1:8080');
+const params = new URLSearchParams
+for(let param of params){
+    console.log(param);
+}
+
+// データの表示
+fetch("/review_get?" + param.toString()).then(response => {
     console.log(response);
     response.json().then((data) => {
         console.log(data);  // 取得されたレスポンスデータをデバッグ表示
-
         //評価点の合計表示
         //const review_average = document.querySelector("#review_average > tbody");
-
-
         let sum = 0;
         data.forEach(elm => {
             //console.log(Object.keys(elm).length);
@@ -19,10 +27,12 @@ fetch("/review_get").then(response => {
         let sum2 = sum/Object.keys(data).length;
         let sum3 = Math.trunc(sum2)
         document.getElementById('review_average').innerHTML = sum3;
-        
 
         // データを表示させる
         const tableBody = document.querySelector("#review-list > tbody");
+        while (tableBody.firstChild) {
+            tableBody.removeChild(tableBody.firstChild);
+        }
         data.forEach(elm => {
             // 1行づつ処理を行う
             let tr = document.createElement('tr');
@@ -43,13 +53,12 @@ fetch("/review_get").then(response => {
         });
     })
 })
-
+/*
 //初期化
 document.getElementById('error-container').innerHTML = ""
 document.getElementById('error-container').style.display = "none"
 document.getElementById('message-container').innerHTML = ""
 document.getElementById('message-container').style.display = "none"
-
 //データ表示
 const show_data = (data) => {
     const tableBody = document.querySelector("#review-list > tbody")
@@ -108,7 +117,7 @@ sb.addEventListener("click", (ev) => {
     //データ検索のWeb APIは/addressをGETメソッドで呼び出す
 
     // データの初期表示
-    fetch("/review?" + param.toString()).then(response => {
+    fetch("/review_get?" + param.toString()).then(response => {
         console.log(response);
         response.json().then((data) => {
             console.log(data);  // 取得されたレスポンスデータをデバッグ表示
@@ -145,3 +154,4 @@ sb.addEventListener("click", (ev) => {
         });
     });
 })
+*/
