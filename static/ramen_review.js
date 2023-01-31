@@ -1,4 +1,4 @@
-
+/*
 fetch("/review_get").then(response => {
     console.log("aaaa")
     console.log(response);
@@ -21,3 +21,4 @@ fetch("/review_get").then(response => {
         // document.getElementById('review_average').innerHTML = sum3;
     })
 })
+*/
