@@ -1,11 +1,38 @@
+/*
+//データ表示
+const show_data = (data) => {
+    const tableBody = document.querySelector("#review-list > tbody")
+    tableBody.innerHTML = ""
+    //レスポンスのJSONデータの件数が0だった場合
+    if (data && data.length == 0) {
+        let tr = document.createElement('tr')
+        tr.innerHTML = "表示するデータがありません。"
+        tableBody.appendChild(tr)
+        return
+    }
+    data.forEach(elm => {
+        let tr = document.createElement('tr')
+        let td = document.createElement('td')
+        td.textContent = elm.write_name
+        tr.appendChild(td)
+        td = document.createElement('td')
+        td.textContent = elm.review_points
+        tr.appendChild(td)
+        td = document.createElement('td')
+        td.textContent = elm.review
+        tr.appendChild(td)
+        //追加
+        tableBody.appendChild(tr)
+    })
+}
+*/
 //<button id="add-submit">Add</button>
 const ab = document.querySelector("#add-submit")
 ab.addEventListener("click", (ev) => {
     ev.preventDefault() //HTMLが本来持っている他の正常なボタン処理をなかったことにする
-
     console.log("追加ボタン押されたよ")
-
     //パラメーター取得
+    const na = document.querySelector("#add-shop_name").value
     //<input required type="text" id="add-write_name" placeholder="write_name" name="rn">
     const rn = document.querySelector("#add-write_name").value
     //<input required type="text" id="add-review_points" placeholder="review_points" name="rp">
@@ -35,13 +62,13 @@ ab.addEventListener("click", (ev) => {
 
     //データ送信
     let data = new FormData()
+    data.append("na", na)
     data.append("rn", rn)
     data.append("rp", rp)
     data.append("re", re)
-
-
+    /*
     //データ表示
-    fetch('/review/review_add_post', {
+    fetch('/review_get/review_add_post', {
         method: 'POST',
         body: data,
     }).then((response) => {
@@ -66,5 +93,5 @@ ab.addEventListener("click", (ev) => {
                 }
             }
         })
-    })
+    })*/
 })

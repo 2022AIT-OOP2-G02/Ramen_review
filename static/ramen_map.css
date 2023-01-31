@@ -4,81 +4,201 @@
     height: 90vh;
     gap: 2em;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 5em 1fr;
+    grid-template-rows: 1fr;
     grid-template-areas:
-        "search map"
         "ranking map";
 }
 
-#search-wrapper {
-    grid-area: search;
-    box-sizing: border-box;
-    height: 100%;
-    width: 100%;
-    border: 3px solid black;
-}
-
 #ranking {
-    display: block;
     grid-area: ranking;
+    display: grid;
+    grid-template-rows: 3em 2em 1fr;
     box-sizing: border-box;
-    height: 100%;
+    height: 90vh;
     width: 100%;
-    border: 3px solid black;
+    border-radius: 1em;
+    background-color: #F0EFE1;
+    padding: 0.5em;
 }
 
-#main:not([data-show='ranking']) #ranking {
+#status-bar {
+    display: flex;
+    align-items: center;
+}
+
+#ranking[data-show="list"] #prev {
     display: none;
 }
 
-#shop-info {
-    display: grid;
-    grid-area: ranking;
-    box-sizing: border-box;
-    height: 100%;
-    width: 100%;
-    border: 3px solid black;
+#prev {
+    font-size: 2em;
+    margin-right: 0.25em;
+    cursor: pointer;
+}
 
-    grid-template-columns: 5em 1fr;
+#shop-list, #shop-page {
+    overflow: hidden auto;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5em;
+}
+
+#ranking:not([data-show="list"]) #shop-list {
+    display: none;
+}
+
+#ranking:not([data-show="page"]) #shop-page {
+    display: none;
+}
+
+.shop-info {
+    display: grid;
+    padding: 0.5em;
+
+    grid-template-columns: 5em 1fr 5em;
     grid-template-rows: 1em 3em 1fr;
     grid-template-areas:
-        "logo-image name-kana"
-        "logo-image name"
-        "none review";
+        "logo-image name-kana name-kana"
+        "logo-image name name"
+        "none review review";
     grid-gap: 1em;
+    border-radius: 1em;
+    background-color: #E8CD97;
 }
 
-#main:not([data-show='shop-info']) #shop-info {
-    display: none;
-}
-
-#shop-logo-image {
+.shop-logo-image-wrapper {
     grid-area: logo-image;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-#shop-name-kana {
+.shop-logo-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 1em;
+}
+
+.shop-name-kana {
     grid-area: name-kana;
 }
 
-#shop-name {
+.shop-name {
     grid-area: name;
     font-size: 2em;
+    z-index: 1;
 }
 
-#shop-open {
-    grid-area: open;
+.shop-point {
+    grid-area: 3 / 4 / 1 / 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #fa954f;
+    opacity: 75%;
 }
 
-#shop-close {
-    grid-area: close;
+#search-wrapper {
+    box-sizing: border-box;
+    border: 1px solid #999;
+    display: flex;
+    align-items: center;
+    border-radius: 1.5em;
+    height: 3em;
+    width: 100%;
+    overflow: hidden;
+    background-color: #ffffff;
 }
 
-#shop-review {
+#search-wrapper input[type="text"] {
+    border: none;
+    height: 2.0em;
+    width: 100%;
+    padding-left: 1em;
+}
+
+#search-wrapper input[type="text"]:focus {
+    outline: 0;
+}
+
+#clear-search {
+    margin: 0.5em;
+    cursor: pointer;
+    color: #757575;
+}
+
+#clear-search:hover {
+    color: #000000;
+}
+
+#search-wrapper input[type="submit"] {
+    cursor: pointer;
+    border: none;
+    background: #5cb0e1;
+    color: #fff;
+    width: 5em;
+    height: 3.0em;
+    outline: none;
+    font-size: 1em;
+}
+
+.shop-review {
     grid-area: review;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1em;
+}
+
+.review-item {
+    display: grid;
+    grid-template-columns: 1fr 4em;
+    grid-template-rows: 1em 3em;
+    grid-template-areas:
+        "name point"
+        "text point";
+    background-color: #C9AC85;
+    border-radius: 1em;
+    padding: 0.5em 1em;
+    margin-left: 1em;
+}
+
+.write-name {
+    grid-area: name;
+    font-size: 0.85em;
+}
+
+.review-point {
+    grid-area: point;
+    display: flex;
+    justify-content: center;
+    font-size: 2em;
+    align-items: center;
+}
+
+.review-item::before {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0.5em 1em 0.5em 0;
+    border-color: transparent #C9AC85 transparent transparent;
+    position: relative;
+    top: 0.5em;
+    left: -2em;
+    content: "";
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.review {
+    grid-area: text;
 }
 
 #map {
     grid-area: map;
     height: 100%;
     width: 100%;
+    border-radius: 1em;
 }
