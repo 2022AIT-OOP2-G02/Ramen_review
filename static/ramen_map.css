@@ -163,6 +163,8 @@
     border-radius: 1em;
     padding: 0.5em 1em;
     margin-left: 1em;
+    text-decoration: none;
+    color: black;
 }
 
 .jump-review-page {
