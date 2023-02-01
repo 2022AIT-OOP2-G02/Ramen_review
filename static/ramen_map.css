@@ -165,6 +165,14 @@
     margin-left: 1em;
 }
 
+.jump-review-page {
+    display: flex!important;
+    justify-content: center;
+    align-items: center;
+    grid-area: 1 / 1 / -1 / -1;
+    height: 100%;
+}
+
 .write-name {
     grid-area: name;
     font-size: 0.85em;
@@ -179,6 +187,7 @@
 }
 
 .review-item::before {
+    display: block;
     width: 0;
     height: 0;
     border-style: solid;

@@ -48,10 +48,11 @@ def review():
     return render_template("ramen_review_add.html")
 
 # レビュー評価画面処理
-@app.route('/review_get', methods=["GET"])
-def reviews(): 
+@app.route('/review_get/json', methods=["GET"])
+def reviews():
     data = obj.get_all()
     print("xxxx")
+    return dumps(data)
 
     # 検索パラメータの取得
     p_write_name = request.args.get('rn',None)
@@ -67,12 +68,12 @@ def reviews():
         json_data = list(filter(lambda item: p_review_points.lower() in item["review_points"].lower(), json_data))
     if p_review is not None:
         json_data = list(filter(lambda item: p_review.lower() in item["review"].lower(), json_data))
-    
+
     #for data_list in (obj.db.test).find():
         #datas=reviews.form_doc(data_list)
         #data.append(data_list)
         #print(data)
-    
+
     #data=obj.get_all()
     #print(data)
     return jsonify(data)
@@ -105,14 +106,14 @@ def review_post():
         return jsonify({
             "error": error_message
         })
-    
+
     #データベースに追加
     rest = obj.add_one(p_write_name, p_review_points, p_review)
 
     #for data in (obj.db.test).find():
         #print(dumps(data))
         #ObjectId.prototype.tojson = function() { return '"' + this.valueOf() + '"'; };
-    
+
     print(dumps((obj.db.test).find()))
     #(obj.db.test).collection.find()
     """

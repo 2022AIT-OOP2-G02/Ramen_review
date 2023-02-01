@@ -79,8 +79,12 @@ const movePrev = (e) => {
     if (e.type !== 'popupclose') map.closePopup();
 };
 
-const displayRamenShopDetail = (shop, e) => {
+const displayRamenShopDetail = (shop) => {
     document.getElementById('ranking').dataset.show = 'page';
+
+    const reviewAddTem = document.getElementById('review-add-tem');
+    const jumpReviewPage = reviewAddTem.content.cloneNode(true);
+    jumpReviewPage.querySelector('a.review-item').href = `/review_get?id=${shop.id}`;
 
     const reviewItemTem = document.getElementById('review-item-tem');
     const reviewDoms = shop.review.map(v => {
@@ -92,7 +96,7 @@ const displayRamenShopDetail = (shop, e) => {
     });
 
     const shopDom = createShopInfoDom(shop);
-    shopDom.querySelector(".shop-review").replaceChildren(...reviewDoms);
+    shopDom.querySelector(".shop-review").replaceChildren(jumpReviewPage, ...reviewDoms);
 
     document.querySelector("#shop-page").replaceChildren(shopDom);
 };
@@ -156,7 +160,7 @@ const fetchShopData = async (params) => {
     const shopList = res.results.shop;
 
     for (const shop of shopList) {
-        const review = await fetchWithParams('/review_get', { id: shop.id });
+        const review = await fetchWithParams('/review_get/json', { id: shop.id });
         shop.review = review;
         shop.point_average = review.length
             ? review.reduce((p, c) => p + c.review_point ?? 0, 0) / review.length | 0
