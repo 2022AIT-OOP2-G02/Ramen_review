@@ -135,12 +135,13 @@ const createShopInfoDom = (shop) => {
     shopDom.querySelector('.shop-name').textContent = shop.name;
     shopDom.querySelector('.shop-point').textContent = shop.point_average;
     shopDom.querySelector('.shop-info').onclick = () => {
-        const { map, markers } = global;
+        const { map, markers, mode } = global;
         const marker = markers.get(shop.id);
+        if (document.getElementById('ranking').dataset.show === 'page') return;
         displayRamenShopDetail(shop);
         if (marker === undefined) return;
         marker.openPopup();
-        map.setView(marker.getLatLng());
+        if (mode === 'search') map.setView(marker.getLatLng());
     };
     return shopDom;
 };
