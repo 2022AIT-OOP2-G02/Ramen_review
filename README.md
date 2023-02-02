@@ -8,7 +8,7 @@
 
 # 動作方法
 1. ターミナル上で`Ramen_review`ディレクトリへ移動
-2. `$ python main.py`で実行可能
+2. `$ python ramen_review.py`で実行可能
 3. Running on xxxxx（xxxxxはurl)の表示があるので任意のブラウザでurlにアクセス
 
 # 以下動作条件
