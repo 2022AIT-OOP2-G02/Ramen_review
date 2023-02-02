@@ -1,73 +1,34 @@
 // データの初期表示
-fetch("/review_get").then(response => {
+fetch("/review_get/post").then(response => {
     console.log(response);
     response.json().then((data) => {
         console.log(data);  // 取得されたレスポンスデータをデバッグ表示
+        console.log("aaaaa");
+        // データを表示させる
+        const tableBody = document.querySelector("#review_list > tbody");
+        data.forEach(elm => {
+            // 1行づつ処理を行う
+            let tr = document.createElement('tr');
+            let td = document.createElement('td');
+            // 名前
+            td.innerText = elm.write_name;
+            tr.appendChild(td);
+            // 評価点
+            td = document.createElement('td');
+            td.innerText = elm.review_points;
+            tr.appendChild(td);
+            // 内容
+            td = document.createElement('td');
+            td.innerText = elm.review;
+            tr.appendChild(td);
+            //店
+            //td = document.createElement('td');
+            //td.innerText = elm.shop_name;
+            //tr.appendChild(td);
+            // 1行分をtableタグ内のtbodyへ追加する
+            tableBody.appendChild(tr);
+        });
     })
-})
-
-
-const sr = document.querySelector("#button")
-        sr.addEventListener("click", (ev) => {
-            ev.preventDefault()
-            console.log("レビュー表示ボタン押されたよ")
-            // ラーメン店のidを使って検索を絞る
-            // shop_nameのid取得
-            //var param = location.search
-            //console.log(param)
-            //console.log(params.get('write-name'));
-            //url取得
-            //const url = new URL('http://127.0.0.1:8080');
-            const param = new URLSearchParams
-            //for(let param of params){
-                //console.log(param);
-            //}
-            console.log(param.toString())
-            
-            // データの表示
-            fetch("/review_get?" + param.toString()).then(response => {
-                console.log(response);
-                response.json().then((data) => {
-                    console.log(data);  // 取得されたレスポンスデータをデバッグ表示
-                    //評価点の合計表示
-                    //const review_average = document.querySelector("#review_average > tbody");
-                    let sum = 0;
-                    data.forEach(elm => {
-                        //console.log(Object.keys(elm).length);
-                        const obj = JSON.parse(elm.review_points);
-                        //console.log(obj);
-                        sum += obj;
-                    });
-                    console.log(Object.keys(data).length);
-                    let sum2 = sum/Object.keys(data).length;
-                    let sum3 = Math.trunc(sum2)
-                    document.getElementById('review_average').innerHTML = sum3;
-
-                    // データを表示させる
-                    const tableBody = document.querySelector("#review-list > tbody");
-                    while (tableBody.firstChild) {
-                        tableBody.removeChild(tableBody.firstChild);
-                    }
-                    data.forEach(elm => {
-                        // 1行づつ処理を行う
-                        let tr = document.createElement('tr');
-                        // 名前
-                        let td = document.createElement('td');
-                        td.innerText = elm.write_name;
-                        tr.appendChild(td);
-                        // 評価点
-                        td = document.createElement('td');
-                        td.innerText = elm.review_points;
-                        tr.appendChild(td);
-                        // レビュー内容
-                        td = document.createElement('td');
-                        td.innerText = elm.review;
-                        tr.appendChild(td);
-                        // 1行分をtableタグ内のtbodyへ追加する
-                        tableBody.appendChild(tr);
-                    });
-                })
-            })
 })
 
 //初期化
@@ -102,6 +63,69 @@ const show_data = (data) => {
     })
 }
 
+
+const sr = document.querySelector("#button")
+sr.addEventListener("click", (ev) => {
+    ev.preventDefault()
+    console.log("レビュー表示ボタン押されたよ")
+    // ラーメン店のidを使って検索を絞る
+    // shop_nameのid取得
+    //var param = location.search
+    //console.log(param)
+    //console.log(params.get('write-name'));
+    //url取得
+    //const url = new URL('http://127.0.0.1:8080');
+    const param = new URLSearchParams
+    //for(let param of params){
+        //console.log(param);
+    //}
+    console.log(param.toString())
+    
+    // データの表示
+    fetch("/review_get?" + param.toString()).then(response => {
+        console.log(response);
+        response.json().then((data) => {
+            console.log(data);  // 取得されたレスポンスデータをデバッグ表示
+            //評価点の合計表示
+            //const review_average = document.querySelector("#review_average > tbody");
+            let sum = 0;
+            data.forEach(elm => {
+                //console.log(Object.keys(elm).length);
+                const obj = JSON.parse(elm.review_points);
+                //console.log(obj);
+                sum += obj;
+            });
+            console.log(Object.keys(data).length);
+            let sum2 = sum/Object.keys(data).length;
+            let sum3 = Math.trunc(sum2)
+            document.getElementById('review_average').innerHTML = sum3;
+
+            // データを表示させる
+            const tableBody = document.querySelector("#review-list > tbody");
+            while (tableBody.firstChild) {
+                tableBody.removeChild(tableBody.firstChild);
+            }
+            data.forEach(elm => {
+                // 1行づつ処理を行う
+                let tr = document.createElement('tr');
+                // 名前
+                let td = document.createElement('td');
+                td.innerText = elm.write_name;
+                tr.appendChild(td);
+                // 評価点
+                td = document.createElement('td');
+                td.innerText = elm.review_points;
+                tr.appendChild(td);
+                // レビュー内容
+                td = document.createElement('td');
+                td.innerText = elm.review;
+                tr.appendChild(td);
+                // 1行分をtableタグ内のtbodyへ追加する
+                tableBody.appendChild(tr);
+            });
+        })
+    })
+})
 
 /*
 // <button id="search-submit">Search</button>
